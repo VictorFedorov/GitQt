@@ -1,0 +1,14 @@
+
+AngelsIT/.DS_Store
+AngelsIT/_debug/.DS_Store
+AngelsIT/_debug/Makefile
+AngelsIT/_debug/build/rcc/qrc_qml.cpp
+AngelsIT/_debug/build/out/AngelsIT.app/Contents/Resources/empty.lproj
+AngelsIT/_debug/build/out/AngelsIT.app/Contents/PkgInfo
+AngelsIT/_debug/build/out/AngelsIT.app/Contents/MacOS/AngelsIT
+AngelsIT/_debug/build/out/AngelsIT.app/Contents/Info.plist
+AngelsIT/_debug/build/obj/qrc_qml.o
+*.o
+AngelsIT/_debug/build/moc/moc_predefs.h
+AngelsIT/_debug/build/moc/moc_csignalhdl.cpp
+AngelsIT/_debug/.qmake.stash
