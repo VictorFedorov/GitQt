@@ -13,87 +13,102 @@ ApplicationWindow {
     Material.primary: Material.BlueGray
     Material.accent: Material.Teal
 
-
     header: ToolBar {
         Label {
-            text: qsTr("App")
+            id: dateText
+            function set() {
+                text = new Date().toLocaleString(Qt.locale("ru_RU"), "dddd d MMMM ,  HH:MM:ss")
+            }
             font.pixelSize: 20
             anchors.centerIn: parent
         }
+        Timer {
+            id: dateTimer
+            interval: 1000
+            repeat: true
+            running: true
+            triggeredOnStart: true
+            onTriggered: dateText.set()
+        }
     }
-    /*
-    Grid {
-        id:userGroup
-         columns: 2
-         spacing: 2
-         Text
-         {
-             id:userNameText
-             text: qsTr("Login as:")
-          }
-         Text
-         {
-             id:userName
-             text: qsTr("User Name")
-         }
 
-     }
-
-*/
-    ListView {
+    RowLayout {
+        id: mainLayout
         anchors.fill: parent
-        model: myListModel
-        /*       delegate: Row {
-            Text { text: "Name is: " + name  + ", "}
-            Text { text: "Number : $" + number }
+        layer.enabled: true
+        ColumnLayout {
+            id: leftSide
+            anchors.left: AnchorLine
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            Layout.minimumHeight: parent.height
+            Layout.minimumWidth: parent.width / 2
+
+            Rectangle {
+                anchors.fill: parent
+                color: "red"
+            }
+            Text {
+                id: tmpId
+                text: qsTr("sdf sg dfgf")
+                //anchors.centerIn: leftSide
+                anchors.top: AnchorLine
+            }
+            RowLayout {
+                id: container
+                Layout.minimumWidth: parent.width
+
+                Rectangle {
+                    anchors.fill: parent
+                    color: "blue"
+                }
+                anchors.bottom: parent.bottom
+
+                //anchors.fill: parent
+                Button {
+                    id: addButton
+                    //width: container.width / 4
+                    text: qsTr("+")
+                    //onClicked: model.submit()
+                    anchors.centerIn: AnchorLine
+                }
+                Button {
+                    id: delButton
+                    //width: container.width / 4
+                    text: qsTr("-")
+                    //onClicked: model.submit()
+                }
+                Button {
+                    id: modifyButton
+                    //width: container.width / 4
+                    text: qsTr("Modify")
+                    //onClicked: model.submit()
+                }
+                Button {
+                    id: setupButton
+                    //width: container.width / 4
+                    text: qsTr("SetUp")
+                    //onClicked: model.submit()
+                }
+            }
         }
-        */
+        ColumnLayout {
+            id: rightSide
+            anchors.right: AnchorLine
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            Layout.minimumHeight: parent.height
+            Layout.minimumWidth: parent.width / 2
+            Rectangle {
+                anchors.fill: parent
+                color: "green"
+            }
+            Text {
+
+                text: qsTr("Caption")
+                anchors.centerIn: parent
+            }
+        }
     }
 
-    ListModel {
-        id: myListModel
-        ListElement {
-            name: "Bill Smith"
-            number: "555 3264"
-        }
-        ListElement {
-            name: "John Brown"
-            number: "555 8426"
-        }
-        ListElement {
-            name: "Sam Wise"
-            number: "555 0473"
-        }
-    }
-
-    footer: RowLayout {
-        id: container
-
-        Button {
-            id: addButton
-            //width: container.width / 4
-
-            text: qsTr("+")
-            //onClicked: model.submit()
-
-        }
-        Button {
-            id: delButton
-            //width: container.width / 4
-            text: qsTr("-")
-            //onClicked: model.submit()
-        }
-        Button {
-            id: modifyButton
-            //width: container.width / 4
-            text: qsTr("Modify")
-            //onClicked: model.submit()
-        }
-        Button {
-            id: setupButton
-            //width: container.width / 4
-            text: qsTr("SetUp")
-            //onClicked: model.submit()
-        }
-    }
-}
+ }
