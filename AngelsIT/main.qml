@@ -5,7 +5,7 @@ import QtQuick.Controls.Material 2.0
 
 ApplicationWindow {
     visible: true
-    width: 640
+    width: 480
     height: 480
     title: qsTr("Notes")
 
@@ -36,31 +36,56 @@ ApplicationWindow {
         id: mainLayout
         anchors.fill: parent
         layer.enabled: true
+        Rectangle {
+            id:mainLayoutBackground
+            anchors.fill: parent
+            color:  Material.color(Material.BlueGrey)
+
+        }
         ColumnLayout {
             id: leftSide
-            anchors.left: AnchorLine
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            Layout.minimumHeight: parent.height
-            Layout.minimumWidth: parent.width / 2
+            anchors.fill: parent
+            spacing: 10
+//            ListView {
+//                id: reqListView
+//                anchors.fill: parent
+//                spacing: 10
+//                delegate: Item {
+//                     width: 80
+//                    height: 40
+//                    Row {
+//                        id: row1
+//                        spacing: 10
+//                        Rectangle {
+//                            width: 40
+//                            height: 40
+//                            color: colorCode
+//                        }
+//                        Text {
+//                            text: caption
+//                            anchors.verticalCenter: parent.verticalCenter
+//                            font.bold: true
+//                            font.pixelSize: 15
+//                        }
+//                    }
+//                }
+//                model: ListModel {
+//                    id : reqListModel
+//                    CListElem{
 
-            Rectangle {
-                anchors.fill: parent
-                color: "red"
-            }
-            Text {
-                id: tmpId
-                text: qsTr("sdf sg dfgf")
-                //anchors.centerIn: leftSide
-                anchors.top: AnchorLine
-            }
-            RowLayout {
-                id: container
+
+//                    }
+//                }
+//            }
+
+             RowLayout {
+                id: btnContainer
                 Layout.minimumWidth: parent.width
 
                 Rectangle {
                     anchors.fill: parent
-                    color: "blue"
+                    color:  Material.color(Material.Indigo)
+
                 }
                 anchors.bottom: parent.bottom
 
@@ -92,23 +117,7 @@ ApplicationWindow {
                 }
             }
         }
-        ColumnLayout {
-            id: rightSide
-            anchors.right: AnchorLine
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            Layout.minimumHeight: parent.height
-            Layout.minimumWidth: parent.width / 2
-            Rectangle {
-                anchors.fill: parent
-                color: "green"
-            }
-            Text {
-
-                text: qsTr("Caption")
-                anchors.centerIn: parent
-            }
-        }
     }
+
 
  }
