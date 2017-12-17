@@ -1,7 +1,11 @@
 import QtQuick 2.7
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
+import Qt3D.Render 2.0
 import QtQuick.Controls.Material 2.0
+import io.clistmodel 1.0
+
+
 
 ApplicationWindow {
     visible: true
@@ -32,92 +36,91 @@ ApplicationWindow {
         }
     }
 
-    RowLayout {
-        id: mainLayout
-        anchors.fill: parent
-        layer.enabled: true
-        Rectangle {
-            id:mainLayoutBackground
-            anchors.fill: parent
-            color:  Material.color(Material.BlueGrey)
 
+
+    CListModel{
+        id : listElemID
+    }
+
+
+    ListView {
+        id: view
+
+        anchors.margins: 10
+        width : parent.width
+        height : parent.height - 50
+        spacing: 10
+        model: listElemID
+        clip: true
+
+        highlight: Rectangle {
+            color: "skyblue"
         }
-        ColumnLayout {
-            id: leftSide
-            anchors.fill: parent
-            spacing: 10
-//            ListView {
-//                id: reqListView
-//                anchors.fill: parent
-//                spacing: 10
-//                delegate: Item {
-//                     width: 80
-//                    height: 40
-//                    Row {
-//                        id: row1
-//                        spacing: 10
-//                        Rectangle {
-//                            width: 40
-//                            height: 40
-//                            color: colorCode
-//                        }
-//                        Text {
-//                            text: caption
-//                            anchors.verticalCenter: parent.verticalCenter
-//                            font.bold: true
-//                            font.pixelSize: 15
-//                        }
-//                    }
-//                }
-//                model: ListModel {
-//                    id : reqListModel
-//                    CListElem{
+        highlightFollowsCurrentItem: true
+
+        EditItemDialog{
+            id : newItemDialog
+        }
 
 
-//                    }
-//                }
-//            }
+        delegate: Item {
+            id: listDelegate
 
-             RowLayout {
-                id: btnContainer
-                Layout.minimumWidth: parent.width
+            property var view: ListView.view
+            property var isCurrent: ListView.isCurrentItem
 
-                Rectangle {
+            width: view.width
+            height: 40
+
+            Rectangle {
+                anchors.margins: 5
+                anchors.fill: parent
+               // radius: height / 2
+                color: model.color
+                border {
+                    color: "black"
+                    width: 1
+                }
+
+                Text {
+                    anchors.centerIn: parent
+                    renderType: Text.NativeRendering
+                    text: "%1%2".arg(model.text).arg(isCurrent ? " *" : "")
+                }
+
+                MouseArea {
                     anchors.fill: parent
-                    color:  Material.color(Material.Indigo)
+                    onClicked: view.currentIndex = model.index
+                    onDoubleClicked:{
 
-                }
-                anchors.bottom: parent.bottom
-
-                //anchors.fill: parent
-                Button {
-                    id: addButton
-                    //width: container.width / 4
-                    text: qsTr("+")
-                    //onClicked: model.submit()
-                    anchors.centerIn: AnchorLine
-                }
-                Button {
-                    id: delButton
-                    //width: container.width / 4
-                    text: qsTr("-")
-                    //onClicked: model.submit()
-                }
-                Button {
-                    id: modifyButton
-                    //width: container.width / 4
-                    text: qsTr("Modify")
-                    //onClicked: model.submit()
-                }
-                Button {
-                    id: setupButton
-                    //width: container.width / 4
-                    text: qsTr("SetUp")
-                    //onClicked: model.submit()
-                }
+                        listElemID.curItemView(model.index)
+                        newItemDialog.visible = true
+                    }
+                 }
             }
         }
     }
 
+    footer :Rectangle {
+        id: button
 
+        width: 100
+        height: 40
+        anchors.horizontalCenter: parent.horizontalCenter
+        border {
+            color: "black"
+            width: 1
+        }
+
+        Text {
+            anchors.centerIn: parent
+            renderType: Text.NativeRendering
+            text: "Add"
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: listElemID.add({ color: "skyblue", text: "new" })
+         }
+    }
  }

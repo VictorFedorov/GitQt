@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQuickStyle>
 
+#include <clistmodel.h>
 #include "csignalhdl.h"
 
 int main(int argc, char *argv[])
@@ -9,6 +10,10 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
     QQuickStyle::setStyle("Material");
+
+
+    qmlRegisterType<CListModel>("io.clistmodel", 1, 0, "CListModel");
+
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QLatin1String("qrc:/main.qml")));

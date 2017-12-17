@@ -3,7 +3,8 @@ QT += qml quick quickcontrols2
 CONFIG += c++11
 
 SOURCES += main.cpp \
-    csignalhdl.cpp
+    csignalhdl.cpp \
+    clistmodel.cpp
 
 RESOURCES += qml.qrc
 
@@ -30,7 +31,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    csignalhdl.h
+    csignalhdl.h \
+    clistmodel.h
 
 MOC_DIR = build/moc
 OBJECTS_DIR = build/obj
