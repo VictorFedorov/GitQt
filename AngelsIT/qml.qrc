@@ -2,7 +2,6 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
-        <file>CDinamicListElem.qml</file>
         <file>EditItemDialog.qml</file>
         <file>LoginDialog.qml</file>
     </qresource>

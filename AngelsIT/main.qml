@@ -4,9 +4,9 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls.Material 2.0
 import io.clistmodel 1.0
 
-
-
 ApplicationWindow {
+    property bool isAppendNew : false
+
     visible: true
     width: 480
     height: 480
@@ -20,7 +20,8 @@ ApplicationWindow {
         Label {
             id: dateText
             function set() {
-                text = new Date().toLocaleString(Qt.locale("ru_RU"), "dddd d MMMM ,  HH:MM:ss")
+                text = new Date().toLocaleString(Qt.locale("ru_RU"),
+                                                 "dddd d MMMM ,  HH:MM:ss")
             }
             font.pixelSize: 20
             anchors.centerIn: parent
@@ -35,22 +36,20 @@ ApplicationWindow {
         }
     }
 
-
-    LoginDialog{
-        id : loginId
+    LoginDialog {
+        id: loginId
     }
 
-    CListModel{
-        id : listElemID
+    CListModel {
+        id: listElemID
     }
-
 
     ListView {
         id: view
 
         anchors.margins: 10
-        width : parent.width
-        height : parent.height - 50
+        width: parent.width
+        height: parent.height - 50
         spacing: 10
         model: listElemID
         clip: true
@@ -60,10 +59,15 @@ ApplicationWindow {
         }
         highlightFollowsCurrentItem: true
 
-        EditItemDialog{
-            id : newItemDialog
+        EditItemDialog {
+            id: newItemDialog
+            onAccepted: {
+                if (isAppendNew){
+                    listElemID.add(newItemDialog.getDesc())
+                    isAppendNew = false;
+                }
+            }
         }
-
 
         delegate: Item {
             id: listDelegate
@@ -77,7 +81,7 @@ ApplicationWindow {
             Rectangle {
                 anchors.margins: 5
                 anchors.fill: parent
-               // radius: height / 2
+                // radius: height / 2
                 color: model.color
                 border {
                     color: "black"
@@ -93,36 +97,39 @@ ApplicationWindow {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: view.currentIndex = model.index
-                    onDoubleClicked:{
+                    onDoubleClicked: {
 
                         listElemID.curItemView(model.index)
                         newItemDialog.visible = true
                     }
-                 }
+                }
             }
         }
     }
 
-    footer :
-        Row{
-        id : buttonRow
+    footer: Row {
+        id: buttonRow
+        spacing : 20
         height: 40
-         anchors.bottom: parent.bottom
-         anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: parent.bottom
 
-         Button{
-             id: addButton
-             text: "Add"
-             onClicked: listElemID.add({ color: "skyblue", text: "new" })
-         }
+        anchors.horizontalCenter: parent.horizontalCenter
 
-         Button{
-             id: delButton
-             text: "Del"
-             onClicked: listElemID.del(view.currentIndex);
-         }
+        Button {
+            id: addButton
+            text: "Добавить"
+            onClicked: {
+                newItemDialog.visible = true
+                isAppendNew = true;
+//                listElemID.add(newItemDialog.getDesc())
+            }
 
+        }
+
+        Button {
+            id: delButton
+            text: "Удалить"
+            onClicked: listElemID.del(view.currentIndex)
+        }
     }
-
-
- }
+}

@@ -19,7 +19,7 @@ class CListModel : public QAbstractListModel
         virtual QVariant data(const QModelIndex &index, int role) const;
         virtual QHash<int, QByteArray> roleNames() const;
 
-        Q_INVOKABLE void add();
+        Q_INVOKABLE void add(QStringList strList);
         Q_INVOKABLE void curItemView(int curInd);
         Q_INVOKABLE void del(int curInd);
 

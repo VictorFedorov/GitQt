@@ -23,7 +23,7 @@ QVariant CListModel::data(const QModelIndex &index, int role) const
 
     switch (role) {
     case ColorRole:
-        return QVariant(index.row() < 2 ? "orange" : "skyblue");
+        return QVariant(index.row() < 3 ? "orange" : "skyblue");
     case TextRole:
         return m_data.at(index.row());
     default:
@@ -40,16 +40,16 @@ QHash<int, QByteArray> CListModel::roleNames() const
     return roles;
 }
 //----------------------------------------------------------------------------------------------------------
-void CListModel::add()
+void CListModel::add(QStringList strList)
 {
     beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
-    m_data.append("new");
+    m_data.append(strList[0]);
     endInsertRows();
 
  }
 //----------------------------------------------------------------------------------------------------------
 void CListModel::curItemView(int curInd){
-    m_data[curInd] = QString("Size: %1").arg(curInd);
+   // m_data[curInd] = QString("Current index: %1").arg(curInd);
 
     QModelIndex index = createIndex(curInd, curInd, static_cast<void *>(0));
     emit dataChanged(index, index);
