@@ -1,7 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
-import Qt3D.Render 2.0
 import QtQuick.Controls.Material 2.0
 import io.clistmodel 1.0
 
@@ -37,6 +36,9 @@ ApplicationWindow {
     }
 
 
+    LoginDialog{
+        id : loginId
+    }
 
     CListModel{
         id : listElemID
@@ -101,26 +103,26 @@ ApplicationWindow {
         }
     }
 
-    footer :Rectangle {
-        id: button
-
-        width: 100
+    footer :
+        Row{
+        id : buttonRow
         height: 40
-        anchors.horizontalCenter: parent.horizontalCenter
-        border {
-            color: "black"
-            width: 1
-        }
+         anchors.bottom: parent.bottom
+         anchors.horizontalCenter: parent.horizontalCenter
 
-        Text {
-            anchors.centerIn: parent
-            renderType: Text.NativeRendering
-            text: "Add"
-        }
-
-        MouseArea {
-            anchors.fill: parent
-            onClicked: listElemID.add({ color: "skyblue", text: "new" })
+         Button{
+             id: addButton
+             text: "Add"
+             onClicked: listElemID.add({ color: "skyblue", text: "new" })
          }
+
+         Button{
+             id: delButton
+             text: "Del"
+             onClicked: listElemID.del(view.currentIndex);
+         }
+
     }
+
+
  }

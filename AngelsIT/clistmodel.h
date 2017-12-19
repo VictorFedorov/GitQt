@@ -21,6 +21,7 @@ class CListModel : public QAbstractListModel
 
         Q_INVOKABLE void add();
         Q_INVOKABLE void curItemView(int curInd);
+        Q_INVOKABLE void del(int curInd);
 
     private:
         QStringList m_data;

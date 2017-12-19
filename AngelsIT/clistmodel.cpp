@@ -1,10 +1,11 @@
+//----------------------------------------------------------------------------------------------------------
 #include "clistmodel.h"
-
+//----------------------------------------------------------------------------------------------------------
 CListModel::CListModel(QObject *parent):
     QAbstractListModel(parent)
 {
 }
-
+//----------------------------------------------------------------------------------------------------------
 int CListModel::rowCount(const QModelIndex &parent) const
 {
     if (parent.isValid()) {
@@ -13,7 +14,7 @@ int CListModel::rowCount(const QModelIndex &parent) const
 
     return m_data.size();
 }
-
+//----------------------------------------------------------------------------------------------------------
 QVariant CListModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) {
@@ -29,7 +30,7 @@ QVariant CListModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 }
-
+//----------------------------------------------------------------------------------------------------------
 QHash<int, QByteArray> CListModel::roleNames() const
 {
     QHash<int, QByteArray> roles = QAbstractListModel::roleNames();
@@ -38,7 +39,7 @@ QHash<int, QByteArray> CListModel::roleNames() const
 
     return roles;
 }
-
+//----------------------------------------------------------------------------------------------------------
 void CListModel::add()
 {
     beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
@@ -46,11 +47,17 @@ void CListModel::add()
     endInsertRows();
 
  }
-
+//----------------------------------------------------------------------------------------------------------
 void CListModel::curItemView(int curInd){
-
     m_data[curInd] = QString("Size: %1").arg(curInd);
 
     QModelIndex index = createIndex(curInd, curInd, static_cast<void *>(0));
     emit dataChanged(index, index);
 }
+//----------------------------------------------------------------------------------------------------------
+void CListModel::del(int curInd){
+   beginRemoveRows(QModelIndex(),curInd,curInd);
+   m_data.removeAt(curInd);
+   endRemoveRows();
+}
+//----------------------------------------------------------------------------------------------------------
