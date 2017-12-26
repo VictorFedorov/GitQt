@@ -45,3 +45,15 @@ AngelsIT/_build/build/moc/moc_predefs.h
 AngelsIT/_build/build/moc/moc_csignalhdl.cpp
 AngelsIT/_build/build/moc/moc_clistmodel.cpp
 AngelsIT/_build/.qmake.stash
+build-AngelsIT-Desktop_Qt_5_9_1_clang_64bit-Debug/Makefile
+build-AngelsIT-Desktop_Qt_5_9_1_clang_64bit-Debug/build/out/AngelsIT.app/Contents/Resources/empty.lproj
+build-AngelsIT-Desktop_Qt_5_9_1_clang_64bit-Debug/build/rcc/qrc_qml.cpp
+build-AngelsIT-Desktop_Qt_5_9_1_clang_64bit-Debug/build/out/AngelsIT.app/Contents/PkgInfo
+build-AngelsIT-Desktop_Qt_5_9_1_clang_64bit-Debug/build/out/AngelsIT.app/Contents/MacOS/AngelsIT
+build-AngelsIT-Desktop_Qt_5_9_1_clang_64bit-Debug/build/out/AngelsIT.app/Contents/Info.plist
+build-AngelsIT-Desktop_Qt_5_9_1_clang_64bit-Debug/build/moc/moc_predefs.h
+build-AngelsIT-Desktop_Qt_5_9_1_clang_64bit-Debug/build/moc/moc_csignalhdl.cpp
+build-AngelsIT-Desktop_Qt_5_9_1_clang_64bit-Debug/build/moc/moc_clistmodel.cpp
+build-AngelsIT-Desktop_Qt_5_9_1_clang_64bit-Debug/.qmake.stash
+AngelsIT/AngelsIT.pro.user
+.DS_Store
