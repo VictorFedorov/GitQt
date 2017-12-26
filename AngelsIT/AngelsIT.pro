@@ -1,12 +1,15 @@
-QT += qml quick quickcontrols2
+QT +=  sql qml quick quickcontrols2
 
 CONFIG += c++11
 
 SOURCES += main.cpp \
     csignalhdl.cpp \
-    clistmodel.cpp
+    clistmodel.cpp \
+    cdatabase.cpp
 
 RESOURCES += qml.qrc
+
+QTPLUGIN += QSQLMYSQL
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -32,7 +35,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     csignalhdl.h \
-    clistmodel.h
+    clistmodel.h \
+    cdatabase.h
 
 MOC_DIR = build/moc
 OBJECTS_DIR = build/obj

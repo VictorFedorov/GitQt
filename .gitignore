@@ -45,3 +45,13 @@ AngelsIT/_build/build/moc/moc_predefs.h
 AngelsIT/_build/build/moc/moc_csignalhdl.cpp
 AngelsIT/_build/build/moc/moc_clistmodel.cpp
 AngelsIT/_build/.qmake.stash
+AngelsIT/_build/build/moc/moc_cdatabase.cpp
+AngelsIT/_build/build/out/qsqlmysql.dll
+AngelsIT/_build/build/out/qsqlmysqld.dll
+AngelsIT/_build/qsqlmysql.dll
+AngelsIT/_build/qsqlmysqld.dll
+AngelsIT/_debug/build/moc/moc_cdatabase.cpp
+AngelsIT/_debug/build/out/qsqlmysql.dll
+AngelsIT/_debug/build/out/qsqlmysqld.dll
+AngelsIT/_debug/qsqlmysql.dll
+AngelsIT/_debug/qsqlmysqld.dll
