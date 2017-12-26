@@ -11,6 +11,10 @@ Dialog {
          * */
 
     signal qmlSignal(string msg, string msg)
+    function getNewText(){
+        logonTextInput.text = "text"
+        console.log("getNewText")
+    }
     closePolicy: Popup.NoAutoClose
     modal: true
     x : (parent.width - width) / 2

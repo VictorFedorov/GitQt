@@ -71,3 +71,5 @@ AngelsIT/_debug/qsqlmysql.dll
 AngelsIT/_debug/qsqlmysqld.dll
 >>>>>>> c93af4868beb402631fb4c6697d09cebde82ea04
 *.user
+*.autosave
+build-AngelsIT-Desktop_Qt_5_9_1_clang_64bit-Debug/build/moc/moc_cdatabase.cpp
