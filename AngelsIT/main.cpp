@@ -32,8 +32,8 @@ int main(int argc, char *argv[])
     QObject::connect(ob, SIGNAL(qmlSignal(QString, QString)),
                      db, SLOT(login(QString, QString)));
 
-    QObject::connect(db, SIGNAL(logonBad()),
-                         ob, SLOT(getNewText()));
+    QObject::connect(db, SIGNAL(login(bool)),
+                         ob, SLOT(login(bool)));
 
 
     if (engine.rootObjects().isEmpty())
