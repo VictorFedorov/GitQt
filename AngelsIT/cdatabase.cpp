@@ -63,9 +63,9 @@ void CDataBase::login(QString userName,QString userPas){
     qDebug(__PRETTY_FUNCTION__);
     if(connectToDataBase(userName, userPas)){
         // 1. send signal to qml !!!
-        emit login(true);
+        emit loginDb(QVariant(true));
         // 2. Запросить список заявок
     }else{
-        emit login(false);
+        emit loginDb(QVariant(false));
     }
 }

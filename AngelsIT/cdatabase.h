@@ -3,6 +3,7 @@
 #include <QSqlDatabase>
 
 #include <QObject>
+#include <QVariant>
 
 class CDataBase : public QObject
 {
@@ -15,7 +16,7 @@ public:
         * */
 signals:
     // Сигнал для передачи данных в qml-интерфейс
-    void login(bool); //удачно/неудачно подключились к БД
+    void loginDb(QVariant); //удачно/неудачно подключились к БД
 private:
     // Сам объект базы данных, с которым будет производиться работа
     QSqlDatabase    db;

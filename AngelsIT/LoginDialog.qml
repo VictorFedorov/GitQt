@@ -11,9 +11,14 @@ Dialog {
          * */
 
     signal qmlSignal(string msg, string msg)
-    function getNewText(){
-        logonTextInput.text = "text"
-        console.log("getNewText")
+    function loginDb(ok){
+        if(ok){
+            logonTextInput.text = "Добро пожаловать"
+        }else{
+            logonTextInput.text = "Попробуйте еще раз"
+        }
+        passwdTextInput.text = ""
+        console.log("loginDb")
     }
     closePolicy: Popup.NoAutoClose
     modal: true

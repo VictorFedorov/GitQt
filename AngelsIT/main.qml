@@ -8,17 +8,6 @@ ApplicationWindow {
     property bool isAppendNew : false
 
 
-    Connections {
-            target: dBase // Указываем целевое соединение
-            /* Объявляем и реализуем функцию, как параметр
-             * объекта и с имененем похожим на название сигнала
-             * Разница в том, что добавляем в начале on и далее пишем
-             * с заглавной буквы
-             * */
-            onLogonGood: {
-                loginId.close()
-            }
-        }
 
     visible: true
     width: 480
