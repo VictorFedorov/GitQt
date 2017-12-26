@@ -4,6 +4,13 @@ import QtQuick.Controls 2.2
 Dialog {
     visible: true
     width: parent.width * 0.75
+    objectName: "loginId"
+    id : loginId
+    /* С помощью объекта Connections
+         * Устанавливаем соединение с классом ядра приложения
+         * */
+
+    signal qmlSignal(string msg, string msg)
     closePolicy: Popup.NoAutoClose
     modal: true
     x : (parent.width - width) / 2
@@ -99,7 +106,8 @@ Dialog {
             anchors.horizontalCenter: parent.horizontalCenter
             onPressed: {
                 // make some logon
-                close();
+                //close();
+                loginId.qmlSignal(logonTextInput.text, passwdTextInput.text)
             }
         }
     }

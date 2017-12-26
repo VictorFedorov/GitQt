@@ -1,9 +1,15 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQuickStyle>
+#include <QQmlContext>
+
+#include <QDebug>
+#include <QPluginLoader>
+
 
 #include <clistmodel.h>
 #include "csignalhdl.h"
+#include "cdatabase.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,22 +17,22 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     QQuickStyle::setStyle("Material");
 
-
     qmlRegisterType<CListModel>("io.clistmodel", 1, 0, "CListModel");
 
-
     QQmlApplicationEngine engine;
+
+    CDataBase* db = new CDataBase;
+
     engine.load(QUrl(QLatin1String("qrc:/main.qml")));
 
     QObject* root = engine.rootObjects()[0];
-    CSignalHdl* sigHdl = new CSignalHdl(root);
-    //QObject::connect(root, SIGNAL(qmlSignal(QString)), sigHdl, SLOT(cppSlot(QString)));
 
-    /*
-QObject* ob = root->findChild<QObject*>("flatButton");
-QObject::connect(ob, SIGNAL(qmlSignalFlatButton(QString)),
-handlerSignals, SLOT(cppSlot(QString)));
-     */
+    QObject* ob = root->findChild<QObject*>("loginId");
+
+    QObject::connect(ob, SIGNAL(qmlSignal(QString, QString)),
+                     db, SLOT(login(QString, QString)));
+
+
 
 
     if (engine.rootObjects().isEmpty())
