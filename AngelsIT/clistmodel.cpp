@@ -1,9 +1,11 @@
 //----------------------------------------------------------------------------------------------------------
 #include "clistmodel.h"
+#include <QGuiApplication>
 //----------------------------------------------------------------------------------------------------------
 CListModel::CListModel(QObject *parent):
     QAbstractListModel(parent)
 {
+    printf("asd");
 }
 //----------------------------------------------------------------------------------------------------------
 int CListModel::rowCount(const QModelIndex &parent) const
@@ -45,13 +47,41 @@ void CListModel::add(QStringList strList)
     int countNotes = (strList.size() -1) / 5;
     if(countNotes > 0){
         beginInsertRows(QModelIndex(), m_data.size(), m_data.size() + countNotes);
-        for(int i=0; i < strList.size(); i+=5){
-            m_data.append(strList[i+1]);
+        for(int i=0; i < strList.size()/5 ; i+=5){
+
+            CDataBase::TDbNote curNote;
+            bool ok;
+            curNote.id = strList[i].toInt(&ok, 10);
+            if (!ok){
+                continue;
+            }
+            curNote.title = strList[i+1];
+            m_data.append(curNote.title);
+            curNote.note = strList[i+2];
+            curNote.comment = strList[i+3];
+            curNote.state = (CDataBase::EState)strList[i+4].toInt(&ok, 10);
+            if (!ok){
+                continue;
+            }
+            listNote.append(curNote);
         }
     }else{
         // add in the end
         beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
-        m_data.append(strList[1]);
+
+        CDataBase::TDbNote curNote;
+        bool ok;
+        curNote.id = strList[0].toInt(&ok, 10);
+        curNote.title = strList[1];
+        curNote.note = strList[2];
+        curNote.comment = strList[3];
+        if (ok){
+            curNote.state = (CDataBase::EState)strList[4].toInt(&ok, 10);
+        }
+        if (ok){
+            listNote.append(curNote);
+        }
+        m_data.append(curNote.title);
     }
 
     endInsertRows();
@@ -59,9 +89,11 @@ void CListModel::add(QStringList strList)
  }
 //----------------------------------------------------------------------------------------------------------
 void CListModel::curItemView(int curInd){
-   // m_data[curInd] = QString("Current index: %1").arg(curInd);
-
+    m_data[curInd];
+    QString("Current index: %1").arg(curInd);
     QModelIndex index = createIndex(curInd, curInd, static_cast<void *>(0));
+
+    // передать в qml данные о записи?
     emit dataChanged(index, index);
 }
 //----------------------------------------------------------------------------------------------------------

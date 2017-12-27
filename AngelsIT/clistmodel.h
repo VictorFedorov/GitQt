@@ -1,6 +1,7 @@
 #ifndef CLISTMODEL_H
 #define CLISTMODEL_H
 
+#include "cdatabase.h"
 #include <QAbstractListModel>
 #include <QStringList>
 class CListModel : public QAbstractListModel
@@ -24,6 +25,9 @@ class CListModel : public QAbstractListModel
         Q_INVOKABLE void del(int curInd);
 
     private:
+        QList<CDataBase::TDbNote> listNote;
+
+        //CDataBase::TDbNote note;
         QStringList m_data;
 };
 

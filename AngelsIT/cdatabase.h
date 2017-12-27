@@ -23,6 +23,7 @@ private:
     // Сам объект базы данных, с которым будет производиться работа
     QSqlDatabase    db;
     QSqlQuery sqlQuery;
+public:
     // role of users
     enum ERole{
         UserRole,
@@ -45,6 +46,7 @@ private:
         QString comment;
         EState  state;
     };
+private:
     QList<TDbNote> listNote;
 private:
     /* Внутренние методы для работы с базой данных

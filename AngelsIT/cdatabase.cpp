@@ -107,8 +107,6 @@ void CDataBase::login(QString userName,QString userPas){
         }else{
             emit loginDb(QVariant(false));
         }
-
-
     }else{
         emit loginDb(QVariant(false));
     }
