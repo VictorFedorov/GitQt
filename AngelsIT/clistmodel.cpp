@@ -42,8 +42,18 @@ QHash<int, QByteArray> CListModel::roleNames() const
 //----------------------------------------------------------------------------------------------------------
 void CListModel::add(QStringList strList)
 {
-    beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
-    m_data.append(strList[0]);
+    int countNotes = (strList.size() -1) / 5;
+    if(countNotes > 0){
+        beginInsertRows(QModelIndex(), m_data.size(), m_data.size() + countNotes);
+        for(int i=0; i < strList.size(); i+=5){
+            m_data.append(strList[i+1]);
+        }
+    }else{
+        // add in the end
+        beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
+        m_data.append(strList[1]);
+    }
+
     endInsertRows();
 
  }

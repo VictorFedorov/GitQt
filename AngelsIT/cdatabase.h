@@ -1,6 +1,7 @@
 #ifndef CDATABASE_H
 #define CDATABASE_H
 #include <QSqlDatabase>
+#include <QSqlQuery>
 
 #include <QObject>
 #include <QVariant>
@@ -17,9 +18,34 @@ public:
 signals:
     // Сигнал для передачи данных в qml-интерфейс
     void loginDb(QVariant); //удачно/неудачно подключились к БД
+    void refreshDb(QVariant); //отобразить обновленные данные БД
 private:
     // Сам объект базы данных, с которым будет производиться работа
     QSqlDatabase    db;
+    QSqlQuery sqlQuery;
+    // role of users
+    enum ERole{
+        UserRole,
+        AdminRole
+    };
+    struct TDbUser{
+        int userId;
+        QString userName;
+        ERole role;
+    } curUser;
+    // state of job
+    enum EState{
+        StateNew,
+        StateDone
+    };
+    struct TDbNote{
+        int id;
+        QString title;
+        QString note;
+        QString comment;
+        EState  state;
+    };
+    QList<TDbNote> listNote;
 private:
     /* Внутренние методы для работы с базой данных
      * */
@@ -35,6 +61,7 @@ public slots:
     Q_INVOKABLE bool connectToDataBase(QString username, QString password, QString host="localhost", QString database="my_schema");
 public slots:
     Q_INVOKABLE void login(QString userName, QString userPas);
+    void refreshDbData();
 signals:
 
 };

@@ -73,3 +73,7 @@ AngelsIT/_debug/qsqlmysqld.dll
 *.user
 *.autosave
 build-AngelsIT-Desktop_Qt_5_9_1_clang_64bit-Debug/build/moc/moc_cdatabase.cpp
+AngelsIT/_build/build/out/base.db
+AngelsIT/_build/build/out/libmysql.dll
+AngelsIT/_debug/build/out/base.db
+AngelsIT/_debug/build/out/libmysql.dll

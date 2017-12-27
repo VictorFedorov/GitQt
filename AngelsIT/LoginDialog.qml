@@ -14,6 +14,7 @@ Dialog {
     function loginDb(ok){
         if(ok){
             logonTextInput.text = "Добро пожаловать"
+            close()
         }else{
             logonTextInput.text = "Попробуйте еще раз"
         }
@@ -106,7 +107,7 @@ Dialog {
             }
             onAccepted: {
                 // go to Logon part
-                close();
+                loginId.qmlSignal(logonTextInput.text, passwdTextInput.text)
             }
         }
         Button {
