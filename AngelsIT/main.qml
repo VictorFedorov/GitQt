@@ -6,7 +6,7 @@ import io.clistmodel 1.0
 
 ApplicationWindow {
     property bool isAppendNew : false
-
+    //signal EditCurrent(int idNote)
     function refreshDb(listNotes){
         console.log("refreshDb")
         console.log(listNotes.length)
@@ -14,21 +14,21 @@ ApplicationWindow {
         var i = 0
         i = listNotes.length;
         if((i != 0 ) && (i % 5 == 0)){
+            for(var j=0; j < i ; j+=5){
+                myArray.push(listNotes[j])
+                myArray.push(listNotes[j+1])
+                myArray.push(listNotes[j+2])
+                myArray.push(listNotes[j+3])
+                myArray.push(listNotes[j+4])
+                console.log(listNotes[j+0])
+                console.log(listNotes[j+1])
+                console.log(listNotes[j+2])
+                console.log(listNotes[j+3])
+                console.log(listNotes[j+4])
+            }
+            listElemID.add(myArray)
         }
 
-        for(var j=0; j < i ; j+=5){
-            myArray.push(listNotes[j])
-            myArray.push(listNotes[j+1])
-            myArray.push(listNotes[j+2])
-            myArray.push(listNotes[j+3])
-            myArray.push(listNotes[j+4])
-            console.log(listNotes[j+0])
-            console.log(listNotes[j+1])
-            console.log(listNotes[j+2])
-            console.log(listNotes[j+3])
-            console.log(listNotes[j+4])
-        }
-        listElemID.add(myArray)
     }
 
 
@@ -144,8 +144,9 @@ ApplicationWindow {
             id: addButton
             text: "Добавить"
             onClicked: {
+                newItemDialog.isAdd = true
                 newItemDialog.visible = true
-                isAppendNew = true;
+                isAppendNew = true; //??
 //                listElemID.add(newItemDialog.getDesc())
             }
 
@@ -153,8 +154,14 @@ ApplicationWindow {
 
         Button {
             id: delButton
+            objectName: "delButton"
+            signal delElem(int idNote)
             text: "Удалить"
-            onClicked: listElemID.del(view.currentIndex)
+            onClicked: {
+
+                listElemID.del(view.currentIndex)
+                delButton.delElem( listElemID.getId(view.currentIndex) )
+            }
         }
     }
 }

@@ -5,7 +5,6 @@
 CListModel::CListModel(QObject *parent):
     QAbstractListModel(parent)
 {
-    printf("asd");
 }
 //----------------------------------------------------------------------------------------------------------
 int CListModel::rowCount(const QModelIndex &parent) const
@@ -44,22 +43,22 @@ QHash<int, QByteArray> CListModel::roleNames() const
 //----------------------------------------------------------------------------------------------------------
 void CListModel::add(QStringList strList)
 {
-    int countNotes = (strList.size() -1) / 5;
-    if(countNotes > 0){
-        beginInsertRows(QModelIndex(), m_data.size(), m_data.size() + countNotes);
-        for(int i=0; i < strList.size()/5 ; i+=5){
+    int countNotes = (strList.size()) / 5;
+    if(countNotes > 1){
+        beginInsertRows(QModelIndex(), m_data.size(), m_data.size() + countNotes - 1);
+        for(int i=0; i < countNotes ; i++){
 
             CDataBase::TDbNote curNote;
             bool ok;
-            curNote.id = strList[i].toInt(&ok, 10);
+            curNote.id = strList[5*i].toInt(&ok, 10);
             if (!ok){
                 continue;
             }
-            curNote.title = strList[i+1];
+            curNote.title = strList[5*i+1];
             m_data.append(curNote.title);
-            curNote.note = strList[i+2];
-            curNote.comment = strList[i+3];
-            curNote.state = (CDataBase::EState)strList[i+4].toInt(&ok, 10);
+            curNote.note = strList[5*i+2];
+            curNote.comment = strList[5*i+3];
+            curNote.state = (CDataBase::EState)strList[5*i+4].toInt(&ok, 10);
             if (!ok){
                 continue;
             }
@@ -102,4 +101,10 @@ void CListModel::del(int curInd){
    m_data.removeAt(curInd);
    endRemoveRows();
 }
+//----------------------------------------------------------------------------------------------------------
+int CListModel::getId(int curInd){
+    printf("%d", curInd) ;
+    return listNote.at(curInd).id;
+}
+
 //----------------------------------------------------------------------------------------------------------

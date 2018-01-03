@@ -64,6 +64,7 @@ public slots:
 public slots:
     Q_INVOKABLE void login(QString userName, QString userPas);
     void refreshDbData();
+    void delElem(int idElem);
 signals:
 
 };

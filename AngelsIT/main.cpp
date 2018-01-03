@@ -27,17 +27,26 @@ int main(int argc, char *argv[])
 
     QObject* root = engine.rootObjects()[0];
 
-    QObject* ob = root->findChild<QObject*>("loginId");
+    // подключение сигналов для формы входа
+    QObject* loginIdObj = root->findChild<QObject*>("loginId");
 
-    QObject::connect(ob, SIGNAL(qmlSignal(QString, QString)),
+    if(loginIdObj!=nullptr){
+    QObject::connect(loginIdObj, SIGNAL(qmlSignal(QString, QString)),
                      db, SLOT(login(QString, QString)));
 
     QObject::connect(db, SIGNAL(loginDb(QVariant)),
-                         ob, SLOT(loginDb(QVariant)));
-
+                         loginIdObj, SLOT(loginDb(QVariant)));
+}
     QObject::connect(db, SIGNAL(refreshDb(QVariant)),
                          root, SLOT(refreshDb(QVariant)));
 
+
+    // сигнал удаления записи
+    QObject* delButton = root->findChild<QObject*>("delButton");
+    if(delButton != nullptr){
+        QObject::connect(delButton, SIGNAL(delElem(int)),
+                         db, SLOT(delElem(int)));
+    }
 
     if (engine.rootObjects().isEmpty())
         return -1;

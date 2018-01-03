@@ -7,8 +7,11 @@ CDataBase::CDataBase(QObject *parent) : QObject(parent)
 {
     //в ресурсы базу данных добавлять нельзя
 //    QString path = qApp->applicationDirPath() + "/base.db";
+#ifdef Q_OS_MACOS
+    QString path = "/Users/victor/work/github/GitQt/AngelsIT/base.db";
+#else
     QString path = "D:\\work\\github\\GitQt\\AngelsIT\\base.db";
-
+#endif
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(path);
 
@@ -40,7 +43,8 @@ bool CDataBase::connectToDataBase(QString username, QString password, QString ho
 //    (ok == true) ? (qDebug("ok")) : (qDebug("not ok"));
 
     if (!isOpen) {
-          db.lastError().text();
+         QString str = db.lastError().text();
+         qDebug( str.toLatin1());
     }
 
     return isOpen;
@@ -77,11 +81,6 @@ void CDataBase::closeDataBase(){
 //bool CDataBase::inserIntoTable(const QString &fname, const QString &sname, const QString &nik){
 
 //}
-////---------------------------------------------------------------
-//// Удаление записи из таблицы по её id
-//bool CDataBase::removeRecord(const int id){
-
-//}
 //---------------------------------------------------------------
 void CDataBase::login(QString userName,QString userPas){
     qDebug(__PRETTY_FUNCTION__);
@@ -112,6 +111,7 @@ void CDataBase::login(QString userName,QString userPas){
     }
 }
 //---------------------------------------------------------------
+// обновить данные из БД
 void CDataBase::refreshDbData(){
     if(!db.isOpen()){
         return;
@@ -137,4 +137,15 @@ void CDataBase::refreshDbData(){
         strList << QString::number (listNote.at(i).state);
       }
     emit refreshDb(QVariant(strList));
+}
+//---------------------------------------------------------------
+// удалить элемент по его id
+void CDataBase::delElem(int idElem){
+    qDebug(__PRETTY_FUNCTION__);
+    if(!db.isOpen()){
+        return;
+    }
+    QString queryStr = "DELETE FROM t_note WHERE t_note.id = " + QString::number(idElem);
+    QSqlQuery query = db.exec(queryStr);
+
 }

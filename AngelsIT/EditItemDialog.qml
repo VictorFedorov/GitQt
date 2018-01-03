@@ -3,6 +3,8 @@ import QtQuick.Controls 2.2
 
 Dialog {
     property int curState: 0
+    property bool isAdd: false
+    property bool isEdit: false
 
 
     visible: false
@@ -126,5 +128,38 @@ Dialog {
         text = newNoteVal.getText(0, newNoteCaption.length);
         comment = newNoteComment.getText(0, newNoteCaption.length);
         return [caption, text, comment, curState]
+    }
+    onAccepted: {
+        // по нажатию на ОК
+        console.log("onAccepted")
+        // 1. если добавляли элемент, то добавить его в БД
+        // 2. если редактировали элемент, то обновить его в БД
+        // по-идее это можно совместить, проверять по id записи
+        if (isAdd){
+            // 1 //
+        }
+        if (isEdit){
+            // 2 //
+        }
+    }
+    onRejected: {
+        // по нажатию ОТМЕНА или закрытию окна
+        console.log("onRejected")
+    }
+    onVisibleChanged: {
+        if(visible){
+            console.log("visible")
+            if(isAdd){
+                // надо очистить все поля, спрятать статус заявки
+                clear();
+            }
+        }
+    }
+    function clear(){
+        newNoteState.enabled = false
+        newNoteState.currentIndex = 0
+        newNoteCaption.text = ""
+        newNoteVal.text = ""
+        newNoteComment.text = ""
     }
 }
