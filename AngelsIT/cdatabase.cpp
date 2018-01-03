@@ -149,3 +149,18 @@ void CDataBase::delElem(int idElem){
     QSqlQuery query = db.exec(queryStr);
 
 }
+//---------------------------------------------------------------
+//добавление элемента из формы (из модели представления)
+void CDataBase::addNewElem(QString elemCaption, QString elemText, QString elemComment, int elemState){
+    qDebug(__PRETTY_FUNCTION__);
+    if(!db.isOpen()){
+        return;
+    }
+    QString queryStr = "INSERT INTO t_note (title, note, comment, state) VALUES ('" + elemCaption \
+             + "','" + elemText + "','" + elemComment + "'," + QString::number(elemState) + ")";
+    QSqlQuery query = db.exec(queryStr);
+    QString err = query.lastError().text();
+int t=4;
+t = 6;
+}
+//INSERT INTO t_note  (title, note, comment, state) VALUES ( 'text 1', 'text2', ' ', 0);

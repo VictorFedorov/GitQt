@@ -47,6 +47,13 @@ int main(int argc, char *argv[])
         QObject::connect(delButton, SIGNAL(delElem(int)),
                          db, SLOT(delElem(int)));
     }
+    // сигнал добавления записи
+    QObject* itemDialogObj = root->findChild<QObject*>("newItemDialog");
+    if(delButton != nullptr){
+        QObject::connect(itemDialogObj, SIGNAL(addNewElem(QString, QString, QString, int)),
+                         db, SLOT(addNewElem(QString, QString, QString, int)));
+    }
+
 
     if (engine.rootObjects().isEmpty())
         return -1;

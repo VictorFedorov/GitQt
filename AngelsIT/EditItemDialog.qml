@@ -2,10 +2,12 @@ import QtQuick 2.0
 import QtQuick.Controls 2.2
 
 Dialog {
+    id: newItemDialog
+    objectName: "newItemDialog"
     property int curState: 0
     property bool isAdd: false
     property bool isEdit: false
-
+    signal addNewElem(string msgCapt, string msgText, string msgCom, int msgState)
 
     visible: false
     title: " "
@@ -137,6 +139,11 @@ Dialog {
         // по-идее это можно совместить, проверять по id записи
         if (isAdd){
             // 1 //
+            var caption, text, comment, state;
+            caption = newNoteCaption.getText(0, newNoteCaption.length);
+            text = newNoteVal.getText(0, newNoteCaption.length);
+            comment = newNoteComment.getText(0, newNoteCaption.length);
+             newItemDialog.addNewElem(caption, text, comment, curState)
         }
         if (isEdit){
             // 2 //

@@ -67,7 +67,7 @@ void CListModel::add(QStringList strList)
     }else{
         // add in the end
         beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
-
+/*
         CDataBase::TDbNote curNote;
         bool ok;
         curNote.id = strList[0].toInt(&ok, 10);
@@ -81,6 +81,7 @@ void CListModel::add(QStringList strList)
             listNote.append(curNote);
         }
         m_data.append(curNote.title);
+        */
     }
 
     endInsertRows();
