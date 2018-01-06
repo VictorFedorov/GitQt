@@ -7,9 +7,17 @@ Dialog {
     objectName: "loginId"
     id : loginId
     signal loginSignal(string msg, string msg)
-    function loginDb(ok){
+    property bool isAdmin: false // 0 - user, 1 - admin
+    function loginDb(ok, isAdminRole){
         if(ok){
             logonTextInput.text = "Добро пожаловать"
+            isAdmin = isAdminRole
+            if(isAdmin){
+                console.log("admin role")
+            }else{
+                console.log("user role")
+
+            }
             close()
         }else{
             logonTextInput.text = "Попробуйте еще раз"
@@ -111,10 +119,10 @@ Dialog {
         }
         Button {
             id: logonButton
-            text: "Logon"
+            text: "Вход"
             anchors.horizontalCenter: parent.horizontalCenter
             onPressed: {
-                // make some logon
+                // make some login
                 //close();
                 loginId.loginSignal(logonTextInput.text, passwdTextInput.text)
             }

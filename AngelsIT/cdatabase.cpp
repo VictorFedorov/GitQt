@@ -97,16 +97,15 @@ void CDataBase::login(QString userName,QString userPas){
                 curUser.role = (ERole)query.value("role").toInt();
                 // 2. Запросить и отобразить список заявок
                  refreshDbData();
-
-                emit loginDb(QVariant(true));
+                emit loginDb(QVariant(true), QVariant((int)curUser.role));
             } else{
-                emit loginDb(QVariant(false));
+                emit loginDb(QVariant(false), QVariant(false));
             }
         }else{
-            emit loginDb(QVariant(false));
+            emit loginDb(QVariant(false), QVariant(false));
         }
     }else{
-        emit loginDb(QVariant(false));
+        emit loginDb(QVariant(false), QVariant(false));
     }
 }
 //---------------------------------------------------------------

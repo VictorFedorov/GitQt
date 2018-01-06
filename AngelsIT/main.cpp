@@ -34,8 +34,8 @@ int main(int argc, char *argv[])
     QObject::connect(loginIdObj, SIGNAL(loginSignal(QString, QString)),
                      db, SLOT(login(QString, QString)));
 
-    QObject::connect(db, SIGNAL(loginDb(QVariant)),
-                         loginIdObj, SLOT(loginDb(QVariant)));
+    QObject::connect(db, SIGNAL(loginDb(QVariant, QVariant)),
+                         loginIdObj, SLOT(loginDb(QVariant, QVariant)));
 }
     QObject::connect(db, SIGNAL(refreshDb(QVariant)),
                          root, SLOT(refreshDb(QVariant)));
