@@ -89,8 +89,8 @@ void CListModel::add(QStringList strList)
  }
 //----------------------------------------------------------------------------------------------------------
 void CListModel::curItemView(int curInd){
-    m_data[curInd];
-    QString("Current index: %1").arg(curInd);
+    //m_data[curInd];
+    //QString("Current index: %1").arg(curInd);
     QModelIndex index = createIndex(curInd, curInd, static_cast<void *>(0));
 
     // передать в qml данные о записи?
@@ -110,3 +110,14 @@ int CListModel::getId(int curInd){
 }
 
 //----------------------------------------------------------------------------------------------------------
+QVariant CListModel::getItem(int curInd){
+    printf("%d", curInd) ;
+    QStringList strList;
+    CDataBase::TDbNote curNote = listNote.at(curInd);
+    strList.append(QString::number(curNote.id));
+    strList.append(curNote.title);
+    strList.append(curNote.note);
+    strList.append(curNote.comment);
+    strList.append(QString::number(curNote.state));
+    return QVariant(strList);
+}

@@ -24,6 +24,7 @@ class CListModel : public QAbstractListModel
         Q_INVOKABLE void curItemView(int curInd);
         Q_INVOKABLE void del(int curInd);
         Q_INVOKABLE int getId(int curInd);
+        Q_INVOKABLE QVariant getItem(int curInd);
 
     private:
         QList<CDataBase::TDbNote> listNote;

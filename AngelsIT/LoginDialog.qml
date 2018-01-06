@@ -6,10 +6,6 @@ Dialog {
     width: parent.width * 0.75
     objectName: "loginId"
     id : loginId
-    /* С помощью объекта Connections
-         * Устанавливаем соединение с классом ядра приложения
-         * */
-
     signal qmlSignal(string msg, string msg)
     function loginDb(ok){
         if(ok){
@@ -43,6 +39,7 @@ Dialog {
             id: logonTextInput
             opacity: 0.5
             anchors.horizontalCenter: parent.horizontalCenter
+            clip: true
             Rectangle {
                 width: parent.width
                 height: parent.height

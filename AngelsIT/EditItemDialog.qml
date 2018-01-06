@@ -49,6 +49,20 @@ Dialog {
                 width: parent.width
                 height: parent.height
                 font.pixelSize: textSize
+                onVisibleChanged: {
+                    if (visible)
+                        newNoteCaption.forceActiveFocus()
+                }
+                Keys.onPressed: {
+                    if (event.key === Qt.Key_Tab) {
+                        newNoteVal.forceActiveFocus()
+                        event.accepted = true
+                    }
+                }
+                onAccepted: {
+                    newNoteVal.forceActiveFocus()
+                }
+
             }
         }
         Text {
@@ -75,6 +89,12 @@ Dialog {
                 width: parent.width
                 height: parent.height
                 font.pixelSize: textSize
+                Keys.onPressed: {
+                    if (event.key === Qt.Key_Tab) {
+                        newNoteComment.forceActiveFocus()
+                        event.accepted = true
+                    }
+                }
             }
         }
         Text {
@@ -143,7 +163,8 @@ Dialog {
             caption = newNoteCaption.getText(0, newNoteCaption.length);
             text = newNoteVal.getText(0, newNoteCaption.length);
             comment = newNoteComment.getText(0, newNoteCaption.length);
-            newItemDialog.addNewElem(caption, text, comment, curState)
+            newItemDialog.addNewElem(caption, text, comment, curState);
+            isAdd = false;
         }
         if (isEdit){
             // 2 //
@@ -168,5 +189,27 @@ Dialog {
         newNoteCaption.text = ""
         newNoteVal.text = ""
         newNoteComment.text = ""
+    }
+    //отображение параметров текущего элемента
+    function showItem(curElem){
+        console.log('showItem')
+        console.log(curElem.length)
+        if(curElem.length >= 5 && isEdit){
+            //скрыть/показать элементы управления
+            newNoteCaption.enabled = false
+            newNoteVal.enabled = false
+            newNoteState.enabled = true
+            newNoteComment.forceActiveFocus()
+
+            newNoteComment.enabled = true
+            //curElem[0] - id записи
+            newNoteCaption.text = curElem[1];
+            newNoteVal.text = curElem[2];
+            newNoteComment.text = curElem[3];
+            newNoteState.currentIndex = curElem[4];
+            isEdit = false;
+        }else{
+            console.log('err length!!!')
+        }
     }
 }

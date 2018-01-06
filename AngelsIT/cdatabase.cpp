@@ -44,7 +44,7 @@ bool CDataBase::connectToDataBase(QString username, QString password, QString ho
 
     if (!isOpen) {
          QString str = db.lastError().text();
-         qDebug( str.toLatin1());
+         //qDebug( str.toLatin1());
     }
 
     return isOpen;
@@ -88,7 +88,6 @@ void CDataBase::login(QString userName,QString userPas){
         // 1. send signal to qml !!!
         QString queryStr = "SELECT * FROM t_user where t_user.name='" + userName + "'";
         QSqlQuery query = db.exec(queryStr);
-        int sizeQuery = query.size();
         QString resStr;
         //пароль можно хэшировать и хранить хэш в БД, потом сравнивать только хэши
         if (query.next()){
@@ -120,7 +119,6 @@ void CDataBase::refreshDbData(){
     QString queryStr = "SELECT * FROM t_note";
     QSqlQuery query = db.exec(queryStr);
     // add sql err !!!
-    int sizeQuery = query.size();
     while(query.next()){
         TDbNote curNote;
         curNote.id = query.value("id").toInt();
@@ -143,7 +141,7 @@ void CDataBase::refreshDbData(){
 //---------------------------------------------------------------
 // удалить элемент по его id
 void CDataBase::delElem(int idElem){
-    qDebug(__PRETTY_FUNCTION__);
+//    qDebug(__PRETTY_FUNCTION__);
     if(!db.isOpen()){
         return;
     }

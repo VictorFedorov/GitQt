@@ -126,7 +126,11 @@ ApplicationWindow {
                     onDoubleClicked: {
 
                         listElemID.curItemView(model.index)
+                        newItemDialog.isEdit = true
                         newItemDialog.visible = true
+                        //
+
+                        newItemDialog.showItem(listElemID.getItem(model.index))
                     }
                 }
             }
