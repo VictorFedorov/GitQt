@@ -180,6 +180,12 @@ Dialog {
             if(isAdd){
                 // надо очистить все поля, спрятать статус заявки
                 clear();
+                newNoteCaption.enabled = true
+                newNoteVal.enabled = true
+                newNoteState.enabled = false
+                newNoteComment.forceActiveFocus()
+                newNoteComment.enabled = true
+
             }
         }
     }
@@ -200,7 +206,6 @@ Dialog {
             newNoteVal.enabled = false
             newNoteState.enabled = true
             newNoteComment.forceActiveFocus()
-
             newNoteComment.enabled = true
             //curElem[0] - id записи
             newNoteCaption.text = curElem[1];

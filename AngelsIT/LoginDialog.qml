@@ -6,7 +6,7 @@ Dialog {
     width: parent.width * 0.75
     objectName: "loginId"
     id : loginId
-    signal qmlSignal(string msg, string msg)
+    signal loginSignal(string msg, string msg)
     function loginDb(ok){
         if(ok){
             logonTextInput.text = "Добро пожаловать"
@@ -37,6 +37,7 @@ Dialog {
         }
         TextInput {
             id: logonTextInput
+            selectByMouse: true
             opacity: 0.5
             anchors.horizontalCenter: parent.horizontalCenter
             clip: true
@@ -77,6 +78,7 @@ Dialog {
         }
         TextInput {
             id: passwdTextInput
+            selectByMouse: true
             opacity: 0.5
             anchors.horizontalCenter: parent.horizontalCenter
             Rectangle {
@@ -104,7 +106,7 @@ Dialog {
             }
             onAccepted: {
                 // go to Logon part
-                loginId.qmlSignal(logonTextInput.text, passwdTextInput.text)
+                loginId.loginSignal(logonTextInput.text, passwdTextInput.text)
             }
         }
         Button {
@@ -114,7 +116,7 @@ Dialog {
             onPressed: {
                 // make some logon
                 //close();
-                loginId.qmlSignal(logonTextInput.text, passwdTextInput.text)
+                loginId.loginSignal(logonTextInput.text, passwdTextInput.text)
             }
         }
     }

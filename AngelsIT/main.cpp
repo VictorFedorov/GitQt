@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     QObject* loginIdObj = root->findChild<QObject*>("loginId");
 
     if(loginIdObj!=nullptr){
-    QObject::connect(loginIdObj, SIGNAL(qmlSignal(QString, QString)),
+    QObject::connect(loginIdObj, SIGNAL(loginSignal(QString, QString)),
                      db, SLOT(login(QString, QString)));
 
     QObject::connect(db, SIGNAL(loginDb(QVariant)),
