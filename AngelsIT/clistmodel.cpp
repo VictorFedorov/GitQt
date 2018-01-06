@@ -45,9 +45,9 @@ void CListModel::add(QStringList strList)
 {
     int countNotes = (strList.size()) / 5;
     if(countNotes > 1){
-        beginInsertRows(QModelIndex(), m_data.size(), m_data.size() + countNotes - 1);
+        listNote.clear();m_data.clear();
+        beginInsertRows(QModelIndex(), 0, countNotes-1);
         for(int i=0; i < countNotes ; i++){
-
             CDataBase::TDbNote curNote;
             bool ok;
             curNote.id = strList[5*i].toInt(&ok, 10);
@@ -64,10 +64,10 @@ void CListModel::add(QStringList strList)
             }
             listNote.append(curNote);
         }
+        endInsertRows();
     }else{
         // add in the end
         beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
-/*
         CDataBase::TDbNote curNote;
         bool ok;
         curNote.id = strList[0].toInt(&ok, 10);
@@ -81,10 +81,10 @@ void CListModel::add(QStringList strList)
             listNote.append(curNote);
         }
         m_data.append(curNote.title);
-        */
+
+        endInsertRows();
     }
 
-    endInsertRows();
 
  }
 //----------------------------------------------------------------------------------------------------------
@@ -98,6 +98,7 @@ void CListModel::curItemView(int curInd){
 }
 //----------------------------------------------------------------------------------------------------------
 void CListModel::del(int curInd){
+   listNote.removeAt(curInd);
    beginRemoveRows(QModelIndex(),curInd,curInd);
    m_data.removeAt(curInd);
    endRemoveRows();

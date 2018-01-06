@@ -7,6 +7,7 @@ import io.clistmodel 1.0
 ApplicationWindow {
     property bool isAppendNew : false
     //signal EditCurrent(int idNote)
+    // обновление данных из БД
     function refreshDb(listNotes){
         console.log("refreshDb")
         console.log(listNotes.length)
@@ -86,12 +87,12 @@ ApplicationWindow {
 
         EditItemDialog {
             id: newItemDialog
-            onAccepted: {
-                if (isAppendNew){
-                    listElemID.add(newItemDialog.getDesc())
-                    isAppendNew = false;
-                }
-            }
+//            onAccepted: {
+//                if (isAppendNew){
+//                    listElemID.add(newItemDialog.getDesc())
+//                    isAppendNew = false;
+//                }
+//            }
         }
 
         delegate: Item {
@@ -158,9 +159,9 @@ ApplicationWindow {
             signal delElem(int idNote)
             text: "Удалить"
             onClicked: {
+                delButton.delElem( listElemID.getId(view.currentIndex) )
 
                 listElemID.del(view.currentIndex)
-                delButton.delElem( listElemID.getId(view.currentIndex) )
             }
         }
     }

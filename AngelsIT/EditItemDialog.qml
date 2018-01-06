@@ -136,14 +136,14 @@ Dialog {
         console.log("onAccepted")
         // 1. если добавляли элемент, то добавить его в БД
         // 2. если редактировали элемент, то обновить его в БД
-        // по-идее это можно совместить, проверять по id записи
+        // по-идее это можно совместить, проверяя по id записи
         if (isAdd){
             // 1 //
             var caption, text, comment, state;
             caption = newNoteCaption.getText(0, newNoteCaption.length);
             text = newNoteVal.getText(0, newNoteCaption.length);
             comment = newNoteComment.getText(0, newNoteCaption.length);
-             newItemDialog.addNewElem(caption, text, comment, curState)
+            newItemDialog.addNewElem(caption, text, comment, curState)
         }
         if (isEdit){
             // 2 //

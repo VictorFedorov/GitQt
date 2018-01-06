@@ -116,8 +116,10 @@ void CDataBase::refreshDbData(){
     if(!db.isOpen()){
         return;
     }
+    listNote.clear();
     QString queryStr = "SELECT * FROM t_note";
     QSqlQuery query = db.exec(queryStr);
+    // add sql err !!!
     int sizeQuery = query.size();
     while(query.next()){
         TDbNote curNote;
@@ -159,8 +161,36 @@ void CDataBase::addNewElem(QString elemCaption, QString elemText, QString elemCo
     QString queryStr = "INSERT INTO t_note (title, note, comment, state) VALUES ('" + elemCaption \
              + "','" + elemText + "','" + elemComment + "'," + QString::number(elemState) + ")";
     QSqlQuery query = db.exec(queryStr);
-    QString err = query.lastError().text();
-int t=4;
-t = 6;
+
+    if(query.lastError().type() != QSqlError::NoError){
+        QString err = query.lastError().text();
+        //qDebug("err is %s", err.toLatin1());
+    }else{
+        // сделать запрос  в БД и обновить listNode
+        queryStr = "SELECT * FROM t_note WHERE t_note.title='" + elemCaption + "' and " \
+                   + "t_note.note='" + elemText + "'";
+        query = db.exec(queryStr);
+        if(query.next()){
+            TDbNote curNote;
+            curNote.id = query.value("id").toInt();
+            curNote.title = query.value("title").toString();
+            curNote.note = query.value("note").toString();
+            curNote.comment = query.value("comment").toString();
+            curNote.state = (EState)query.value("state").toInt();
+            listNote.append(curNote);
+            // ?? emit 
+            QStringList strList;
+                strList << QString::number (curNote.id);
+                strList << curNote.title;
+                strList << curNote.note;
+                strList << curNote.comment;
+                strList << QString::number (curNote.state);
+            emit refreshDb(QVariant(strList));
+
+        }
+
+        ;
+    }
+
 }
 //INSERT INTO t_note  (title, note, comment, state) VALUES ( 'text 1', 'text2', ' ', 0);
