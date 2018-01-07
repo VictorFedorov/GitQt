@@ -63,6 +63,7 @@ ApplicationWindow {
     }
 
     LoginDialog {
+        id : loginId
 
     }
 
@@ -87,12 +88,7 @@ ApplicationWindow {
 
         EditItemDialog {
             id: newItemDialog
-//            onAccepted: {
-//                if (isAppendNew){
-//                    listElemID.add(newItemDialog.getDesc())
-//                    isAppendNew = false;
-//                }
-//            }
+            isAdmin: loginId.isAdmin
         }
 
         delegate: Item {

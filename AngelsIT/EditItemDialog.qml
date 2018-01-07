@@ -7,6 +7,7 @@ Dialog {
     property int curState: 0
     property bool isAdd: false
     property bool isEdit: false
+    property bool isAdmin: false // 0 - user, 1 - admin
     signal addNewElem(string msgCapt, string msgText, string msgCom, int msgState)
 
     visible: false
@@ -133,9 +134,29 @@ Dialog {
             id : newNoteState
             textRole: "key"
             model: ListModel {
-                ListElement { key: "Новая"; value: 1 }
-                ListElement { key: "В работе"; value: 2 }
-                ListElement { key: "Решена"; value: 3 }
+                id : newNoteStateModel
+                ListElement {
+                    key: "Новая";
+                    value: 1
+                }
+                ListElement {
+                    key: "В работе";
+                    value: 2
+                }
+                ListElement {
+                    key: "Решена";
+                    value: 3
+                }
+            }
+            onVisibleChanged: {
+                if (visible && isEdit)
+                    newNoteStateModel.clear()
+                    newNoteStateModel.append({"key":"В работе","value": 2});
+                    newNoteStateModel.append({"key":"Решена","value": 3});
+                if (visible && isAdd){
+                    newNoteStateModel.clear()
+                    newNoteStateModel.append({"key":"Новая","value": 1});
+                }
             }
             onCurrentIndexChanged: {
 
@@ -168,15 +189,32 @@ Dialog {
         }
         if (isEdit){
             // 2 //
+            isEdit = false
         }
     }
     onRejected: {
         // по нажатию ОТМЕНА или закрытию окна
+        isAdd = false
+        isEdit = false
         console.log("onRejected")
     }
     onVisibleChanged: {
         if(visible){
             console.log("visible")
+            // отображение элементов управления в соответствии с ролью пользователя
+            if(isAdmin){
+                console.log("isAdmin")
+                newNoteCaption.enabled = false
+                newNoteVal.enabled = false
+                newNoteComment.enabled = true
+                newNoteState.enabled = true
+            }else{
+                console.log("isUser")
+                newNoteCaption.enabled = true
+                newNoteVal.enabled = true
+                newNoteComment.enabled = true
+                newNoteState.enabled = true
+           }
             if(isAdd){
                 // надо очистить все поля, спрятать статус заявки
                 clear();
