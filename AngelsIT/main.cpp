@@ -52,8 +52,8 @@ int main(int argc, char *argv[])
     if(delButton != nullptr){
         QObject::connect(itemDialogObj, SIGNAL(addNewElem(QString, QString, QString, int)),
                          db, SLOT(addNewElem(QString, QString, QString, int)));
-        QObject::connect(itemDialogObj, SIGNAL(editElem(QString, QString, QString, int)),
-                         db, SLOT(editElem(QString, QString, QString, int)));
+        QObject::connect(itemDialogObj, SIGNAL(editElem(int, QString, QString, QString, int)),
+                         db, SLOT(editElem(int, QString, QString, QString, int)));
     }
 
 

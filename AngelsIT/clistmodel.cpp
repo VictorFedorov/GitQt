@@ -93,7 +93,6 @@ void CListModel::add(QStringList strList)
 void CListModel::curItemView(int curInd){
     curItemInd = curInd;
     QModelIndex index = createIndex(curInd, curInd, static_cast<void *>(0));
-
     // передать в qml данные о записи
     emit dataChanged(index, index);
 }
@@ -125,12 +124,13 @@ QVariant CListModel::getItem(int curInd){
 //----------------------------------------------------------------------------------------------------------
 void CListModel::editItem(QStringList strList){
     qDebug("%s ", __PRETTY_FUNCTION__);
-//    strList[0]; // название элемента, оно останется неизменным
-//    strList[1]; // содержание, оно тоже останется неизменным
+    //    strList[0]; // id элемента, останется неизменным
+    //    strList[1]; // название элемента, оно останется неизменным
+    //    strList[2]; // содержание, оно тоже останется неизменным
     CDataBase::TDbNote curNote = listNote.takeAt(curItemInd);
-    curNote.comment = strList.at(2);
+    curNote.comment = strList.at(3);
     bool ok;
-    curNote.state = (CDataBase::EState)strList[3].toInt(&ok, 10);
+    curNote.state = (CDataBase::EState)strList[4].toInt(&ok, 10);
     if (!ok){
         qWarning("%s err convert state", __PRETTY_FUNCTION__);
     }

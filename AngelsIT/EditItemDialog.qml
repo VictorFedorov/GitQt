@@ -5,11 +5,12 @@ Dialog {
     id: newItemDialog
     objectName: "newItemDialog"
     property int curState: 0
+    property int curId: 0
     property bool isAdd: false
     property bool isEdit: false
     property bool isAdmin: false // 0 - user, 1 - admin
     signal addNewElem(string msgCapt, string msgText, string msgCom, int msgState)
-    signal editElem(string msgCapt, string msgText, string msgCom, int msgState)
+    signal editElem(int curId, string msgCapt, string msgText, string msgCom, int msgState)
 
     visible: false
     title: " "
@@ -17,7 +18,10 @@ Dialog {
     property int textSize: 16
     property int captionSize: 16
     font.pixelSize: captionSize
-
+    //установить id текущей записи
+    function setCurId(newCurId){
+        curId = newCurId
+    }
 
     //    header: Text {
     //        text: "Редактирование записи"
@@ -187,7 +191,7 @@ Dialog {
         caption = newNoteCaption.getText(0, newNoteCaption.length)
         text = newNoteVal.getText(0, newNoteVal.length)
         comment = newNoteComment.getText(0, newNoteComment.length)
-        return [caption, text, comment, curState]
+        return [curId, caption, text, comment, curState]
     }
     onAccepted: {
         // по нажатию на ОК
@@ -211,7 +215,7 @@ Dialog {
             caption = newNoteCaption.getText(0, newNoteCaption.length)
             text = newNoteVal.getText(0, newNoteVal.length)
             comment = newNoteComment.getText(0, newNoteComment.length)
-            newItemDialog.editElem(caption, text, comment, curState)
+            newItemDialog.editElem(curId, caption, text, comment, curState)
             isEdit = false
         }
     }

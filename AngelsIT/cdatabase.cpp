@@ -166,7 +166,7 @@ void CDataBase::addNewElem(QString elemCaption, QString elemText, QString elemCo
 }
 //---------------------------------------------------------------
 //изменение параметров элемента из формы (из модели представления)
-void CDataBase::editElem(QString elemCaption, QString elemText, QString elemComment, int elemState){
+void CDataBase::editElem(int id, QString elemCaption, QString elemText, QString elemComment, int elemState){
     qDebug(__PRETTY_FUNCTION__);
     if(!db.isOpen()){
         return;
@@ -178,7 +178,7 @@ void CDataBase::editElem(QString elemCaption, QString elemText, QString elemComm
     TDbNote *note=nullptr;
 
     for(auto curNote : listNote){
-        if((curNote.title == elemCaption) && (curNote.note == elemText)){
+        if(curNote.id == id ){
             note = &curNote;
             break;
         }

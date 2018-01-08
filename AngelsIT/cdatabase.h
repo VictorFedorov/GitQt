@@ -63,7 +63,7 @@ public slots:
     void refreshDbData();
     void delElem(int idElem);
     void addNewElem(QString, QString, QString, int);
-    void editElem(QString, QString, QString, int);
+    void editElem(int id, QString, QString, QString, int);
 signals:
 
 };

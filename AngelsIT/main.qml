@@ -128,7 +128,7 @@ ApplicationWindow {
                         newItemDialog.isEdit = true
                         newItemDialog.visible = true
                         //
-
+                        newItemDialog.setCurId(listElemID.getId(model.index))
                         newItemDialog.showItem(listElemID.getItem(model.index))
                     }
                 }
