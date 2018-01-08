@@ -73,10 +73,14 @@ ApplicationWindow {
 
     ListView {
         id: view
+        ScrollBar.vertical: ScrollBar {
+            id: vbar
+            active: vbar.active
+        }
 
         anchors.margins: 10
         width: parent.width
-        height: parent.height - 50
+        height: parent.height
         spacing: 10
         model: listElemID
         clip: true
@@ -141,9 +145,8 @@ ApplicationWindow {
         spacing : 20
         height: 40
         anchors.bottom: parent.bottom
-
         anchors.horizontalCenter: parent.horizontalCenter
-
+        visible: !loginId.isAdmin
         Button {
             id: addButton
             text: "Добавить"
@@ -153,9 +156,7 @@ ApplicationWindow {
                 isAppendNew = true; //??
 //                listElemID.add(newItemDialog.getDesc())
             }
-
         }
-
         Button {
             id: delButton
             objectName: "delButton"
@@ -163,7 +164,6 @@ ApplicationWindow {
             text: "Удалить"
             onClicked: {
                 delButton.delElem( listElemID.getId(view.currentIndex) )
-
                 listElemID.del(view.currentIndex)
             }
         }
