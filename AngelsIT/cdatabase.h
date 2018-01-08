@@ -57,15 +57,13 @@ private:
     bool createTable();         // Создание базы таблицы в базе данных
 
 public slots:
-//    bool inserIntoTable(const QVariantList &data);      // Добавление записей в таблицу
-//    bool inserIntoTable(const QString &fname, const QString &sname, const QString &nik);
-//    bool removeRecord(const int id); // Удаление записи из таблицы по её id
     Q_INVOKABLE bool connectToDataBase(QString username, QString password, QString host="localhost", QString database="my_schema");
 public slots:
     Q_INVOKABLE void login(QString userName, QString userPas);
     void refreshDbData();
     void delElem(int idElem);
     void addNewElem(QString, QString, QString, int);
+    void editElem(QString, QString, QString, int);
 signals:
 
 };

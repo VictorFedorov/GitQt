@@ -89,6 +89,9 @@ ApplicationWindow {
         EditItemDialog {
             id: newItemDialog
             isAdmin: loginId.isAdmin
+            onEditElem: {
+                listElemID.editItem(getDesc() )    //передать параметры в модельное представление
+            }
         }
 
         delegate: Item {

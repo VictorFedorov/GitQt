@@ -51,36 +51,10 @@ bool CDataBase::connectToDataBase(QString username, QString password, QString ho
 }
 
 //---------------------------------------------------------------
-////---------------------------------------------------------------
-//// Открытие базы данных
-//bool CDataBase::openDataBase(){
-
-//}
-////---------------------------------------------------------------
-//// Восстановление базы данных
-//bool CDataBase::restoreDataBase(){
-
-//}
-//---------------------------------------------------------------
 // Закрытие базы данных
 void CDataBase::closeDataBase(){
     db.close();
 }
-//---------------------------------------------------------------
-//// Создание базы таблицы в базе данных
-//bool CDataBase::createTable(){
-
-//}
-////---------------------------------------------------------------
-//// Добавление записей в таблицу
-//bool CDataBase::inserIntoTable(const QVariantList &data){
-
-//}
-////---------------------------------------------------------------
-//// Добавление записей в таблицу
-//bool CDataBase::inserIntoTable(const QString &fname, const QString &sname, const QString &nik){
-
-//}
 //---------------------------------------------------------------
 void CDataBase::login(QString userName,QString userPas){
     qDebug(__PRETTY_FUNCTION__);
@@ -190,4 +164,39 @@ void CDataBase::addNewElem(QString elemCaption, QString elemText, QString elemCo
     }
 
 }
-//INSERT INTO t_note  (title, note, comment, state) VALUES ( 'text 1', 'text2', ' ', 0);
+//---------------------------------------------------------------
+//изменение параметров элемента из формы (из модели представления)
+void CDataBase::editElem(QString elemCaption, QString elemText, QString elemComment, int elemState){
+    qDebug(__PRETTY_FUNCTION__);
+    if(!db.isOpen()){
+        return;
+    }
+
+//    QString queryStr = "UPDATE INTO t_note (title, note, comment, state) VALUES ('" + elemCaption \
+//             + "','" + elemText + "','" + elemComment + "'," + QString::number(elemState) + ")";
+//    QSqlQuery query = db.exec(queryStr);
+    TDbNote *note=nullptr;
+
+    for(auto curNote : listNote){
+        if((curNote.title == elemCaption) && (curNote.note == elemText)){
+            note = &curNote;
+            break;
+        }
+    }
+    if(note == nullptr){
+        qWarning("%s , err can not find edited item", __PRETTY_FUNCTION__);
+        return;
+    }
+
+    QSqlQuery query(db);
+    query.prepare("UPDATE t_note SET comment=:comment, state=:state WHERE id=:id");
+    query.bindValue(":comment", elemComment);
+    query.bindValue(":state", elemState);
+    query.bindValue(":id", note->id);
+    if(query.lastError().type() != QSqlError::NoError){
+        QString err = query.lastError().text();
+        qDebug("err is ");
+    }else{
+        query.exec();
+    }
+}

@@ -25,12 +25,14 @@ class CListModel : public QAbstractListModel
         Q_INVOKABLE void del(int curInd);
         Q_INVOKABLE int getId(int curInd);
         Q_INVOKABLE QVariant getItem(int curInd);
+        Q_INVOKABLE void editItem(QStringList strList);
 
     private:
         QList<CDataBase::TDbNote> listNote;
 
         //CDataBase::TDbNote note;
         QStringList m_data;
+        int curItemInd;
 };
 
 #endif // CLISTMODEL_H

@@ -1,10 +1,12 @@
 //----------------------------------------------------------------------------------------------------------
 #include "clistmodel.h"
 #include <QGuiApplication>
+#include <QDebug>
 //----------------------------------------------------------------------------------------------------------
 CListModel::CListModel(QObject *parent):
     QAbstractListModel(parent)
 {
+    curItemInd = -1;
 }
 //----------------------------------------------------------------------------------------------------------
 int CListModel::rowCount(const QModelIndex &parent) const
@@ -89,11 +91,10 @@ void CListModel::add(QStringList strList)
  }
 //----------------------------------------------------------------------------------------------------------
 void CListModel::curItemView(int curInd){
-    //m_data[curInd];
-    //QString("Current index: %1").arg(curInd);
+    curItemInd = curInd;
     QModelIndex index = createIndex(curInd, curInd, static_cast<void *>(0));
 
-    // передать в qml данные о записи?
+    // передать в qml данные о записи
     emit dataChanged(index, index);
 }
 //----------------------------------------------------------------------------------------------------------
@@ -120,4 +121,18 @@ QVariant CListModel::getItem(int curInd){
     strList.append(curNote.comment);
     strList.append(QString::number(curNote.state));
     return QVariant(strList);
+}
+//----------------------------------------------------------------------------------------------------------
+void CListModel::editItem(QStringList strList){
+    qDebug("%s ", __PRETTY_FUNCTION__);
+//    strList[0]; // название элемента, оно останется неизменным
+//    strList[1]; // содержание, оно тоже останется неизменным
+    CDataBase::TDbNote curNote = listNote.takeAt(curItemInd);
+    curNote.comment = strList.at(2);
+    bool ok;
+    curNote.state = (CDataBase::EState)strList[3].toInt(&ok, 10);
+    if (!ok){
+        qWarning("%s err convert state", __PRETTY_FUNCTION__);
+    }
+    listNote.insert(curItemInd, curNote);
 }
