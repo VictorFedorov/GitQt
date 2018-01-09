@@ -20,12 +20,15 @@ class CListModel : public QAbstractListModel
         virtual QVariant data(const QModelIndex &index, int role) const;
         virtual QHash<int, QByteArray> roleNames() const;
 
+        void onCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
+
         Q_INVOKABLE void add(QStringList strList);
         Q_INVOKABLE void curItemView(int curInd);
         Q_INVOKABLE void del(int curInd);
         Q_INVOKABLE int getId(int curInd);
         Q_INVOKABLE QVariant getItem(int curInd);
         Q_INVOKABLE void editItem(QStringList strList);
+        Q_INVOKABLE void repaintElement();
 
     private:
         QList<CDataBase::TDbNote> listNote;

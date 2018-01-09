@@ -96,6 +96,11 @@ ApplicationWindow {
             onEditElem: {
                 listElemID.editItem(getDesc() )    //передать параметры в модельное представление
             }
+            onVisibleChanged: {
+                if (visible === false){
+                  listElemID.repaintElement()
+                }
+            }
         }
 
         delegate: Item {
@@ -142,10 +147,13 @@ ApplicationWindow {
 
     footer: Row {
         id: buttonRow
-        spacing : 20
+        spacing : (parent.width - addButton.width - delButton.width)/3
         height: 40
-        anchors.bottom: parent.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
+        leftPadding: (parent.width - addButton.width - delButton.width)/3
+        rightPadding: 6
+        bottomPadding: 10
+        //anchors.bottom: parent.bottom
+        //anchors.horizontalCenter: parent.horizontalCenter
         visible: !loginId.isAdmin
         Button {
             id: addButton
@@ -163,8 +171,10 @@ ApplicationWindow {
             signal delElem(int idNote)
             text: "Удалить"
             onClicked: {
-                delButton.delElem( listElemID.getId(view.currentIndex) )
-                listElemID.del(view.currentIndex)
+                if(view.currentIndex >=0){
+                    delButton.delElem( listElemID.getId(view.currentIndex) )
+                    listElemID.del(view.currentIndex)
+                }
             }
         }
     }

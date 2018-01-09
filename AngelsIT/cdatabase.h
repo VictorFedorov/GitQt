@@ -36,7 +36,9 @@ public:
     } curUser;
     // state of job
     enum EState{
+        FirstState,
         StateNew,
+        StateWork,
         StateDone
     };
     struct TDbNote{

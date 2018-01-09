@@ -25,8 +25,25 @@ QVariant CListModel::data(const QModelIndex &index, int role) const
     }
 
     switch (role) {
-    case ColorRole:
-        return QVariant(index.row() < 3 ? "orange" : "skyblue");
+    case ColorRole:{
+        const CDataBase::TDbNote curNote = listNote.at(index.row());
+        QString color;
+        switch(curNote.state){
+            case CDataBase::StateNew:{
+              color = "white";
+              break;
+            }
+            case CDataBase::StateWork:{
+              color = "#FF4720";
+              break;
+            }
+            case CDataBase::StateDone:{
+              color = "#90CC29";
+              break;
+            }
+        }
+        return QVariant(color);
+    }
     case TextRole:
         return m_data.at(index.row());
     default:
@@ -135,4 +152,15 @@ void CListModel::editItem(QStringList strList){
         qWarning("%s err convert state", __PRETTY_FUNCTION__);
     }
     listNote.insert(curItemInd, curNote);
+}
+//----------------------------------------------------------------------------------------------------------
+void CListModel::onCurrentChanged(const QModelIndex &current, const QModelIndex &previous){
+    qDebug("%s ", __PRETTY_FUNCTION__);
+
+}
+//----------------------------------------------------------------------------------------------------------
+void CListModel::repaintElement(){
+    qDebug("%s curElem.ind = %d", __PRETTY_FUNCTION__, curItemInd);
+    QModelIndex index = createIndex(curItemInd, curItemInd, static_cast<void *>(0));
+    emit dataChanged(index, index);
 }
