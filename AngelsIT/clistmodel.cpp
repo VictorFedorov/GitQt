@@ -15,7 +15,7 @@ int CListModel::rowCount(const QModelIndex &parent) const
         return 0;
     }
 
-    return m_data.size();
+    return listNote.size();
 }
 //----------------------------------------------------------------------------------------------------------
 QVariant CListModel::data(const QModelIndex &index, int role) const
@@ -24,9 +24,9 @@ QVariant CListModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
+    const CDataBase::TDbNote curNote = listNote.at(index.row());
     switch (role) {
     case ColorRole:{
-        const CDataBase::TDbNote curNote = listNote.at(index.row());
         QString color;
         switch(curNote.state){
             case CDataBase::StateNew:{
@@ -44,8 +44,9 @@ QVariant CListModel::data(const QModelIndex &index, int role) const
         }
         return QVariant(color);
     }
-    case TextRole:
-        return m_data.at(index.row());
+    case TextRole:{
+        return listNote.at(index.row()).title;
+        }
     default:
         return QVariant();
     }
@@ -64,7 +65,7 @@ void CListModel::add(QStringList strList)
 {
     int countNotes = (strList.size()) / 5;
     if(countNotes > 1){
-        listNote.clear();m_data.clear();
+        listNote.clear();
         beginInsertRows(QModelIndex(), 0, countNotes-1);
         for(int i=0; i < countNotes ; i++){
             CDataBase::TDbNote curNote;
@@ -74,7 +75,7 @@ void CListModel::add(QStringList strList)
                 continue;
             }
             curNote.title = strList[5*i+1];
-            m_data.append(curNote.title);
+
             curNote.note = strList[5*i+2];
             curNote.comment = strList[5*i+3];
             curNote.state = (CDataBase::EState)strList[5*i+4].toInt(&ok, 10);
@@ -86,7 +87,7 @@ void CListModel::add(QStringList strList)
         endInsertRows();
     }else{
         // add in the end
-        beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
+        beginInsertRows(QModelIndex(), listNote.size(), listNote.size());
         CDataBase::TDbNote curNote;
         bool ok;
         curNote.id = strList[0].toInt(&ok, 10);
@@ -99,7 +100,6 @@ void CListModel::add(QStringList strList)
         if (ok){
             listNote.append(curNote);
         }
-        m_data.append(curNote.title);
 
         endInsertRows();
     }
@@ -117,7 +117,6 @@ void CListModel::curItemView(int curInd){
 void CListModel::del(int curInd){
    listNote.removeAt(curInd);
    beginRemoveRows(QModelIndex(),curInd,curInd);
-   m_data.removeAt(curInd);
    endRemoveRows();
 }
 //----------------------------------------------------------------------------------------------------------
@@ -152,11 +151,6 @@ void CListModel::editItem(QStringList strList){
         qWarning("%s err convert state", __PRETTY_FUNCTION__);
     }
     listNote.insert(curItemInd, curNote);
-}
-//----------------------------------------------------------------------------------------------------------
-void CListModel::onCurrentChanged(const QModelIndex &current, const QModelIndex &previous){
-    qDebug("%s ", __PRETTY_FUNCTION__);
-
 }
 //----------------------------------------------------------------------------------------------------------
 void CListModel::repaintElement(){

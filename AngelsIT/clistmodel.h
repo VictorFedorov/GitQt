@@ -19,22 +19,24 @@ class CListModel : public QAbstractListModel
         virtual int rowCount(const QModelIndex &parent) const;
         virtual QVariant data(const QModelIndex &index, int role) const;
         virtual QHash<int, QByteArray> roleNames() const;
-
-        void onCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
-
+        //добавить элемент, вызывается из формы
         Q_INVOKABLE void add(QStringList strList);
         Q_INVOKABLE void curItemView(int curInd);
+        //удалить элемент, вызывается из формы
         Q_INVOKABLE void del(int curInd);
+        //возвращает id элемента (по индексу на форме), вызывается из формы
         Q_INVOKABLE int getId(int curInd);
+        //возвращает описание элемента, поля по порядку, вызывается из формы
         Q_INVOKABLE QVariant getItem(int curInd);
+        //редактировать текущий элемент, на входе новые значения
         Q_INVOKABLE void editItem(QStringList strList);
+        //для отрисовки изменения состояния элемента, вызывается из формы
         Q_INVOKABLE void repaintElement();
 
     private:
+        //список заявок
         QList<CDataBase::TDbNote> listNote;
-
-        //CDataBase::TDbNote note;
-        QStringList m_data;
+        //номер (порядковый в представлении) заявки
         int curItemInd;
 };
 
