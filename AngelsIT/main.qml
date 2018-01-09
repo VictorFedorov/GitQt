@@ -38,11 +38,17 @@ ApplicationWindow {
     height: 480
     title: qsTr("Notes")
 
-    Material.theme: Material.Light
+    Material.theme: Material.BlueGray
     Material.primary: Material.BlueGray
     Material.accent: Material.Teal
+//    Material.background: Material.LightGreen
+
 
     header: ToolBar {
+        Rectangle{
+            anchors.fill: parent
+            color: 'steelblue'
+        }
         Label {
             id: dateText
             function set() {
@@ -81,12 +87,12 @@ ApplicationWindow {
         anchors.margins: 10
         width: parent.width
         height: parent.height
-        spacing: 10
+        spacing: 6
         model: listElemID
         clip: true
 
         highlight: Rectangle {
-            color: "skyblue"
+            color: "steelblue"
         }
         highlightFollowsCurrentItem: true
 
@@ -115,7 +121,7 @@ ApplicationWindow {
             Rectangle {
                 anchors.margins: 5
                 anchors.fill: parent
-                // radius: height / 2
+                radius: height / 2
                 color: model.color
                 border {
                     color: "black"
@@ -145,8 +151,14 @@ ApplicationWindow {
         }
     }
 
-    footer: Row {
+    footer: Rectangle {
+        height: 40
+        color: "steelblue"
+
         id: buttonRow
+Row{
+
+
         spacing : (parent.width - addButton.width - delButton.width)/3
         height: 40
         leftPadding: (parent.width - addButton.width - delButton.width)/3
@@ -177,5 +189,5 @@ ApplicationWindow {
                 }
             }
         }
-    }
+    }}
 }
