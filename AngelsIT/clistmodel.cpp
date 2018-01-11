@@ -65,8 +65,6 @@ void CListModel::add(QStringList strList)
 {
     int countNotes = (strList.size()) / 5;
     if(countNotes > 0){
-        //listNote.clear();
-//        beginInsertRows(QModelIndex(), 0, countNotes-1);
         for(int i=0; i < countNotes ; i++){
             CDataBase::TDbNote curNote;
             bool ok;
@@ -89,10 +87,6 @@ void CListModel::add(QStringList strList)
                     //такой элемент уже есть в списке
                     isInList = true;
                     curNoteInd = listNote.indexOf(curListNote);
-//                    curListNote.title = curNote.title;
-//                    curListNote.note = curNote.note;
-//                    curListNote.comment = curNote.comment;
-//                    curListNote.state = curNote.state;
                     QStringList editList;
                     editList.append(strList[5*i]);
                     editList.append(strList[5*i+1]);
@@ -108,50 +102,9 @@ void CListModel::add(QStringList strList)
                 beginInsertRows(QModelIndex(), listNote.count(), listNote.count());
                 listNote.append(curNote);
                 endInsertRows();
-            }else{
-                //QModelIndex index = createIndex(curNoteInd, 0, static_cast<void *>(0));
-                //emit dataChanged(index, index);
             }
         }
-//        endInsertRows();
-    }/*else{
-        // add in the end
-        CDataBase::TDbNote curNote;
-        bool ok;
-        curNote.id = strList[0].toInt(&ok, 10);
-        curNote.title = strList[1];
-        curNote.note = strList[2];
-        curNote.comment = strList[3];
-        if (ok){
-            curNote.state = (CDataBase::EState)strList[4].toInt(&ok, 10);
-        }
-
-        bool isInList = false;
-        int curNoteInd=-1;
-        for( auto curListNote : listNote){
-            if(curListNote.id == curNote.id){
-                //такой элемент уже есть в списке
-                curNoteInd = listNote.indexOf(curListNote);
-                isInList = true;
-                curListNote.title = curNote.title;
-                curListNote.note = curNote.note;
-                curListNote.comment = curNote.comment;
-                curListNote.state = curNote.state;
-                break;
-            }
-        }
-        if(!ok) return;
-        if(!isInList) {
-            beginInsertRows(QModelIndex(), listNote.size(), listNote.size());
-            listNote.append(curNote);
-            endInsertRows();
-        }else{
-            QModelIndex index = createIndex(curNoteInd, 0, static_cast<void *>(0));
-            emit dataChanged(index, index);
-        }
-
-
-    }*/
+    }
 
 
  }

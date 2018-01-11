@@ -2,25 +2,65 @@
 #include "cdatabase.h"
 #include <QGuiApplication>
 #include <QSqlError>
+#include <QTimer>
+#include <QFile>
 //---------------------------------------------------------------
 CDataBase::CDataBase(QObject *parent) : QObject(parent)
 {
     //в ресурсы базу данных добавлять нельзя
-//    QString path = qApp->applicationDirPath() + "/base.db";
-#ifdef Q_OS_MACOS
-    QString path = "/Users/victor/work/github/GitQt/AngelsIT/base.db";
-#else
-    QString path = "D:\\work\\github\\GitQt\\AngelsIT\\base.db";
-#endif
+    QString dbFileName = qApp->applicationFilePath();
+    dbFileName.append(".db");
     db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName(path);
-
+    db.setDatabaseName(dbFileName);
+    if (!QFile::exists(dbFileName)){
+        QFile dbFile(dbFileName);
+        if(dbFile.open(QIODevice::WriteOnly)){
+            dbFile.close();
+            createTables();
+        }
+    }
 }
 //---------------------------------------------------------------
 CDataBase::~CDataBase(){
+    db.close();
 }
 //---------------------------------------------------------------
+ // Создание базы
+void CDataBase::createTables(){
+    bool isOpen = db.open();
+    if (!isOpen) {
+         QString str = db.lastError().text();
+         qDebug( "line:%d, %s " + str.toLatin1(), __LINE__, __PRETTY_FUNCTION__);
+    }
+    QString queryStr = "CREATE TABLE 't_user' ( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `role` INTEGER NOT NULL, `paswd` TEXT )";
+    QSqlQuery sqlQuery = db.exec(queryStr);
+    queryStr = "CREATE TABLE `t_note` ( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, `title` TEXT NOT NULL, `note` TEXT NOT NULL, `comment` TEXT, `state` INTEGER NOT NULL )";
+    sqlQuery = db.exec(queryStr);
 
+    QSqlQuery query(db);
+    //добавим пользователей
+    query.prepare("INSERT INTO t_user ( name, role, paswd) VALUES ( :name,:role,:paswd)");
+    query.bindValue(":name", "user");
+    query.bindValue(":role", UserRole);
+    query.bindValue(":paswd", "123");
+    if(query.lastError().type() != QSqlError::NoError){
+        QString err = query.lastError().text();
+        qDebug("line:%d, %s err is " + err.toLatin1(), __LINE__, __PRETTY_FUNCTION__);
+    }else{
+        query.exec();
+    }
+    query.prepare("INSERT INTO t_user ( name, role, paswd) VALUES ( :name,:role,:paswd)");
+    query.bindValue(":name", "admin");
+    query.bindValue(":role", AdminRole);
+    query.bindValue(":paswd", "123");
+    if(query.lastError().type() != QSqlError::NoError){
+        QString err = query.lastError().text();
+        qDebug("line:%d, %s err is " + err.toLatin1(), __LINE__, __PRETTY_FUNCTION__);
+    }else{
+        query.exec();
+    }
+
+}
 //---------------------------------------------------------------
 
 bool CDataBase::connectToDataBase(QString username, QString password, QString host, QString database){
@@ -44,9 +84,10 @@ bool CDataBase::connectToDataBase(QString username, QString password, QString ho
 
     if (!isOpen) {
          QString str = db.lastError().text();
-         //qDebug( str.toLatin1());
+         qDebug( "line:%d, %s " + str.toLatin1(), __LINE__, __PRETTY_FUNCTION__);
     }
 
+    QTimer::singleShot(3000, this, SLOT(refreshData()));
     return isOpen;
 }
 
@@ -60,8 +101,10 @@ void CDataBase::login(QString userName,QString userPas){
     qDebug(__PRETTY_FUNCTION__);
     if(connectToDataBase(userName, userPas)){
         // 1. send signal to qml !!!
-        QString queryStr = "SELECT * FROM t_user where t_user.name='" + userName + "'";
-        QSqlQuery query = db.exec(queryStr);
+        QSqlQuery query(db);
+        query.prepare("SELECT * FROM t_user where t_user.name=:userName");
+        query.bindValue(":userName", userName);
+        query.exec();
         QString resStr;
         //пароль можно хэшировать и хранить хэш в БД, потом сравнивать только хэши
         if (query.next()){
@@ -90,16 +133,22 @@ void CDataBase::refreshDbData(){
     }
     listNote.clear();
     QString queryStr = "SELECT * FROM t_note";
-    QSqlQuery query = db.exec(queryStr);
+    QSqlQuery query(db);
+    query.exec("SELECT * FROM t_note");
     // add sql err !!!
-    while(query.next()){
-        TDbNote curNote;
-        curNote.id = query.value("id").toInt();
-        curNote.title = query.value("title").toString();
-        curNote.note = query.value("note").toString();
-        curNote.comment = query.value("comment").toString();
-        curNote.state = (EState)query.value("state").toInt();
-        listNote.append(curNote);
+    if(query.lastError().type() != QSqlError::NoError){
+        QString err = query.lastError().text();
+        qDebug("line:%d, %s err is " + err.toLatin1(), __LINE__, __PRETTY_FUNCTION__);
+    }else{
+        while(query.next()){
+            TDbNote curNote;
+            curNote.id = query.value("id").toInt();
+            curNote.title = query.value("title").toString();
+            curNote.note = query.value("note").toString();
+            curNote.comment = query.value("comment").toString();
+            curNote.state = (EState)query.value("state").toInt();
+            listNote.append(curNote);
+        }
     }
     QStringList strList;
     for (int i = 0; i < listNote.size(); ++i) {
@@ -118,9 +167,10 @@ void CDataBase::delElem(int idElem){
     if(!db.isOpen()){
         return;
     }
-    QString queryStr = "DELETE FROM t_note WHERE t_note.id = " + QString::number(idElem);
-    QSqlQuery query = db.exec(queryStr);
-
+    QSqlQuery query(db);
+    query.prepare("DELETE FROM t_note WHERE t_note.id = :id");
+    query.bindValue("id", idElem);
+    query.exec();
 }
 //---------------------------------------------------------------
 //добавление элемента из формы (из модели представления)
@@ -129,18 +179,24 @@ void CDataBase::addNewElem(QString elemCaption, QString elemText, QString elemCo
     if(!db.isOpen()){
         return;
     }
-    QString queryStr = "INSERT INTO t_note (title, note, comment, state) VALUES ('" + elemCaption \
-             + "','" + elemText + "','" + elemComment + "'," + QString::number(elemState) + ")";
-    QSqlQuery query = db.exec(queryStr);
+    QSqlQuery query(db);
+    query.prepare("INSERT INTO t_note (title, note, comment, state) VALUES (:title, :note, :comment, :state)");
+    query.bindValue(":title", elemCaption);
+    query.bindValue(":note", elemText);
+    query.bindValue(":comment", elemComment);
+    query.bindValue(":state", elemState);
+    query.exec();
 
     if(query.lastError().type() != QSqlError::NoError){
         QString err = query.lastError().text();
         //qDebug("err is %s", err.toLatin1());
     }else{
         // сделать запрос  в БД и обновить listNode
-        queryStr = "SELECT * FROM t_note WHERE t_note.title='" + elemCaption + "' and " \
-                   + "t_note.note='" + elemText + "'";
-        query = db.exec(queryStr);
+        query.prepare("SELECT * FROM t_note WHERE t_note.title=:title and t_note.note=:note");
+
+        query.bindValue(":title", elemCaption);
+        query.bindValue(":note", elemText);
+        query.exec();
         if(query.next()){
             TDbNote curNote;
             curNote.id = query.value("id").toInt();
@@ -157,12 +213,8 @@ void CDataBase::addNewElem(QString elemCaption, QString elemText, QString elemCo
                 strList << curNote.comment;
                 strList << QString::number (curNote.state);
             emit refreshDb(QVariant(strList));
-
         }
-
-        ;
     }
-
 }
 //---------------------------------------------------------------
 //изменение параметров элемента из формы (из модели представления)
@@ -172,9 +224,6 @@ void CDataBase::editElem(int id, QString elemCaption, QString elemText, QString 
         return;
     }
 
-//    QString queryStr = "UPDATE INTO t_note (title, note, comment, state) VALUES ('" + elemCaption \
-//             + "','" + elemText + "','" + elemComment + "'," + QString::number(elemState) + ")";
-//    QSqlQuery query = db.exec(queryStr);
     TDbNote *note=nullptr;
 
     for(auto curNote : listNote){
@@ -203,14 +252,14 @@ void CDataBase::editElem(int id, QString elemCaption, QString elemText, QString 
 //---------------------------------------------------------------
 //обновление параметров из БД 
 void CDataBase::refreshData(){
+    QTimer::singleShot(5000, this, SLOT(refreshData()));
     qDebug(__PRETTY_FUNCTION__);
     if(!db.isOpen()){
         return;
     }
     // обрабатывать только измененные элементы
-    //listNote.clear();
-    QString queryStr = "SELECT * FROM t_note";
-    QSqlQuery query = db.exec(queryStr);
+    QSqlQuery query(db);
+    query.exec("SELECT * FROM t_note");
     // add sql err !!!
     QStringList strList;
     while(query.next()){

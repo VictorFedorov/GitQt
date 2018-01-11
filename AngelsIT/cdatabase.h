@@ -74,10 +74,9 @@ private:
 private:
     /* Внутренние методы для работы с базой данных
      * */
-    bool openDataBase();        // Открытие базы данных
-    bool restoreDataBase();     // Восстановление базы данных
+    //bool openDataBase();        // Открытие базы данных
     void closeDataBase();       // Закрытие базы данных
-    bool createTable();         // Создание базы таблицы в базе данных
+    void createTables();         // Создание базы
 
 public slots:
     Q_INVOKABLE bool connectToDataBase(QString username, QString password, QString host="localhost", QString database="my_schema");

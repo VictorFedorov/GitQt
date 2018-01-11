@@ -6,7 +6,6 @@ import io.clistmodel 1.0
 
 ApplicationWindow {
     property bool isAppendNew: false
-    //signal EditCurrent(int idNote)
     // обновление данных из БД
     function refreshDb(listNotes) {
         console.log("refreshDb")
@@ -96,9 +95,7 @@ ApplicationWindow {
             id: newItemDialog
             isAdmin: loginId.isAdmin
             onEditElem: {
-                listElemID.editItem(
-                            getDesc(
-                                )) //передать параметры в модельное представление
+                listElemID.editItem(getDesc()) //передать параметры в модельное представление
             }
         }
 
@@ -114,7 +111,7 @@ ApplicationWindow {
             Rectangle {
                 anchors.margins: 5
                 anchors.fill: parent
-                radius: height / 2
+                radius: 5
                 color: model.color
                 border {
                     color: "black"
@@ -149,7 +146,7 @@ ApplicationWindow {
 
         id: buttonRow
         Row {
-            spacing: 10//(parent.width - addButton.width - delButton.width) / 3
+            spacing: (parent.width - addButton.width - delButton.width) / 3
             height: 40
             leftPadding: (parent.width - addButton.width - delButton.width) / 3
             rightPadding: 6
@@ -161,7 +158,7 @@ ApplicationWindow {
                 onClicked: {
                     newItemDialog.isAdd = true
                     newItemDialog.visible = true
-                    isAppendNew = true //??
+                    isAppendNew = true
                 }
             }
             Button {
@@ -179,6 +176,7 @@ ApplicationWindow {
             }
             Button{
                 id: refreshButton
+                visible: false
                 objectName: "refreshButton"
                 text: "Обновить"
                 signal refreshData()

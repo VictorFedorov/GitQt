@@ -55,13 +55,13 @@ Dialog {
                 color: "skyblue"
                 border.color: "black"
                 border.width: 1
-                radius: 3
+                radius: 5
             }
             text: ""
             horizontalAlignment: TextInput.AlignHCenter
             verticalAlignment: TextInput.AlignVCenter
             cursorVisible: true
-            width: parent.width / 2
+            width: parent.width *2 / 3
             height: 40
             font.pixelSize: 16
             onVisibleChanged: {
@@ -95,7 +95,7 @@ Dialog {
                 color: "skyblue"
                 border.color: "black"
                 border.width: 1
-                radius: 3
+                radius: 5
             }
             text: ""
             horizontalAlignment: TextInput.AlignHCenter
