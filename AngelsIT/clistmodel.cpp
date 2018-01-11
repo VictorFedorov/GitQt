@@ -6,7 +6,7 @@
 CListModel::CListModel(QObject *parent):
     QAbstractListModel(parent)
 {
-    curItemInd = -1;
+    curItemInd = 0;
 }
 //----------------------------------------------------------------------------------------------------------
 int CListModel::rowCount(const QModelIndex &parent) const
@@ -64,9 +64,9 @@ QHash<int, QByteArray> CListModel::roleNames() const
 void CListModel::add(QStringList strList)
 {
     int countNotes = (strList.size()) / 5;
-    if(countNotes > 1){
-        listNote.clear();
-        beginInsertRows(QModelIndex(), 0, countNotes-1);
+    if(countNotes > 0){
+        //listNote.clear();
+//        beginInsertRows(QModelIndex(), 0, countNotes-1);
         for(int i=0; i < countNotes ; i++){
             CDataBase::TDbNote curNote;
             bool ok;
@@ -82,12 +82,40 @@ void CListModel::add(QStringList strList)
             if (!ok){
                 continue;
             }
-            listNote.append(curNote);
+            bool isInList = false;;
+            int curNoteInd=-1;
+            for( auto curListNote : listNote){
+                if(curListNote.id == curNote.id){
+                    //такой элемент уже есть в списке
+                    isInList = true;
+                    curNoteInd = listNote.indexOf(curListNote);
+//                    curListNote.title = curNote.title;
+//                    curListNote.note = curNote.note;
+//                    curListNote.comment = curNote.comment;
+//                    curListNote.state = curNote.state;
+                    QStringList editList;
+                    editList.append(strList[5*i]);
+                    editList.append(strList[5*i+1]);
+                    editList.append(strList[5*i+2]);
+                    editList.append(strList[5*i+3]);
+                    editList.append(strList[5*i+4]);
+                    editItem(editList);
+                    break;
+
+                }
+            }
+            if(!isInList) {
+                beginInsertRows(QModelIndex(), listNote.count(), listNote.count());
+                listNote.append(curNote);
+                endInsertRows();
+            }else{
+                //QModelIndex index = createIndex(curNoteInd, 0, static_cast<void *>(0));
+                //emit dataChanged(index, index);
+            }
         }
-        endInsertRows();
-    }else{
+//        endInsertRows();
+    }/*else{
         // add in the end
-        beginInsertRows(QModelIndex(), listNote.size(), listNote.size());
         CDataBase::TDbNote curNote;
         bool ok;
         curNote.id = strList[0].toInt(&ok, 10);
@@ -97,12 +125,33 @@ void CListModel::add(QStringList strList)
         if (ok){
             curNote.state = (CDataBase::EState)strList[4].toInt(&ok, 10);
         }
-        if (ok){
+
+        bool isInList = false;
+        int curNoteInd=-1;
+        for( auto curListNote : listNote){
+            if(curListNote.id == curNote.id){
+                //такой элемент уже есть в списке
+                curNoteInd = listNote.indexOf(curListNote);
+                isInList = true;
+                curListNote.title = curNote.title;
+                curListNote.note = curNote.note;
+                curListNote.comment = curNote.comment;
+                curListNote.state = curNote.state;
+                break;
+            }
+        }
+        if(!ok) return;
+        if(!isInList) {
+            beginInsertRows(QModelIndex(), listNote.size(), listNote.size());
             listNote.append(curNote);
+            endInsertRows();
+        }else{
+            QModelIndex index = createIndex(curNoteInd, 0, static_cast<void *>(0));
+            emit dataChanged(index, index);
         }
 
-        endInsertRows();
-    }
+
+    }*/
 
 
  }
@@ -143,18 +192,32 @@ void CListModel::editItem(QStringList strList){
     //    strList[0]; // id элемента, останется неизменным
     //    strList[1]; // название элемента, оно останется неизменным
     //    strList[2]; // содержание, оно тоже останется неизменным
-    CDataBase::TDbNote curNote = listNote.takeAt(curItemInd);
-    curNote.comment = strList.at(3);
+//    CDataBase::TDbNote curNote = listNote.takeAt(curItemInd);
     bool ok;
-    curNote.state = (CDataBase::EState)strList[4].toInt(&ok, 10);
+    int curId = strList[0].toInt(&ok, 10);
+    if (!ok) {
+        qWarning("%d: %s err string to int", __LINE__, __PRETTY_FUNCTION__);
+        return;
+    }
+    CDataBase::TDbNote *curNote=nullptr;
+    for(auto curNoteInList : listNote){
+        if(curNoteInList.id == curId){
+            curNote = &curNoteInList;
+            curItemInd = listNote.indexOf(curNoteInList);
+            break;
+        }
+    }
+    if(curNote==nullptr){
+        qWarning("%d: %s err find id=%d in list", __LINE__, __PRETTY_FUNCTION__, curId);
+        return;
+    }
+    curNote->comment = strList[3];
+    curNote->state = (CDataBase::EState)strList[4].toInt(&ok, 10);
     if (!ok){
         qWarning("%s err convert state", __PRETTY_FUNCTION__);
     }
-    listNote.insert(curItemInd, curNote);
-}
-//----------------------------------------------------------------------------------------------------------
-void CListModel::repaintElement(){
-    qDebug("%s curElem.ind = %d", __PRETTY_FUNCTION__, curItemInd);
-    QModelIndex index = createIndex(curItemInd, curItemInd, static_cast<void *>(0));
+    listNote.takeAt(curItemInd);
+    listNote.insert(curItemInd, *curNote);
+    QModelIndex index = createIndex(curItemInd, 0, static_cast<void *>(0));
     emit dataChanged(index, index);
 }

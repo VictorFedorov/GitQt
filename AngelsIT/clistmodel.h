@@ -30,8 +30,6 @@ class CListModel : public QAbstractListModel
         Q_INVOKABLE QVariant getItem(int curInd);
         //редактировать текущий элемент, на входе новые значения
         Q_INVOKABLE void editItem(QStringList strList);
-        //для отрисовки изменения состояния элемента, вызывается из формы
-        Q_INVOKABLE void repaintElement();
 
     private:
         //список заявок

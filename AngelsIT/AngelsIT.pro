@@ -3,7 +3,6 @@ QT +=  sql qml quick quickcontrols2
 CONFIG += c++11
 
 SOURCES += main.cpp \
-    csignalhdl.cpp \
     clistmodel.cpp \
     cdatabase.cpp
 
@@ -33,7 +32,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    csignalhdl.h \
     clistmodel.h \
     cdatabase.h
 

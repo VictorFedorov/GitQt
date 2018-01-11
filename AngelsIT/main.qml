@@ -5,33 +5,31 @@ import QtQuick.Controls.Material 2.0
 import io.clistmodel 1.0
 
 ApplicationWindow {
-    property bool isAppendNew : false
+    property bool isAppendNew: false
     //signal EditCurrent(int idNote)
     // обновление данных из БД
-    function refreshDb(listNotes){
+    function refreshDb(listNotes) {
         console.log("refreshDb")
         console.log(listNotes.length)
         var myArray = new Array()
         var i = 0
-        i = listNotes.length;
-        if((i != 0 ) && (i % 5 == 0)){
-            for(var j=0; j < i ; j+=5){
+        i = listNotes.length
+        if ((i != 0) && (i % 5 == 0)) {
+            for (var j = 0; j < i; j += 5) {
                 myArray.push(listNotes[j])
-                myArray.push(listNotes[j+1])
-                myArray.push(listNotes[j+2])
-                myArray.push(listNotes[j+3])
-                myArray.push(listNotes[j+4])
-                console.log(listNotes[j+0])
-                console.log(listNotes[j+1])
-                console.log(listNotes[j+2])
-                console.log(listNotes[j+3])
-                console.log(listNotes[j+4])
+                myArray.push(listNotes[j + 1])
+                myArray.push(listNotes[j + 2])
+                myArray.push(listNotes[j + 3])
+                myArray.push(listNotes[j + 4])
+                console.log(listNotes[j + 0])
+                console.log(listNotes[j + 1])
+                console.log(listNotes[j + 2])
+                console.log(listNotes[j + 3])
+                console.log(listNotes[j + 4])
             }
             listElemID.add(myArray)
         }
-
     }
-
 
     visible: true
     width: 480
@@ -41,11 +39,10 @@ ApplicationWindow {
     Material.theme: Material.BlueGray
     Material.primary: Material.BlueGray
     Material.accent: Material.Teal
-//    Material.background: Material.LightGreen
 
-
+    //    Material.background: Material.LightGreen
     header: ToolBar {
-        Rectangle{
+        Rectangle {
             anchors.fill: parent
             color: 'steelblue'
         }
@@ -69,8 +66,7 @@ ApplicationWindow {
     }
 
     LoginDialog {
-        id : loginId
-
+        id: loginId
     }
 
     CListModel {
@@ -100,12 +96,9 @@ ApplicationWindow {
             id: newItemDialog
             isAdmin: loginId.isAdmin
             onEditElem: {
-                listElemID.editItem(getDesc() )    //передать параметры в модельное представление
-            }
-            onVisibleChanged: {
-                if (visible === false){
-                  listElemID.repaintElement()
-                }
+                listElemID.editItem(
+                            getDesc(
+                                )) //передать параметры в модельное представление
             }
         }
 
@@ -142,7 +135,6 @@ ApplicationWindow {
                         listElemID.curItemView(model.index)
                         newItemDialog.isEdit = true
                         newItemDialog.visible = true
-                        //
                         newItemDialog.setCurId(listElemID.getId(model.index))
                         newItemDialog.showItem(listElemID.getItem(model.index))
                     }
@@ -156,38 +148,44 @@ ApplicationWindow {
         color: "steelblue"
 
         id: buttonRow
-Row{
-
-
-        spacing : (parent.width - addButton.width - delButton.width)/3
-        height: 40
-        leftPadding: (parent.width - addButton.width - delButton.width)/3
-        rightPadding: 6
-        bottomPadding: 10
-        //anchors.bottom: parent.bottom
-        //anchors.horizontalCenter: parent.horizontalCenter
-        visible: !loginId.isAdmin
-        Button {
-            id: addButton
-            text: "Добавить"
-            onClicked: {
-                newItemDialog.isAdd = true
-                newItemDialog.visible = true
-                isAppendNew = true; //??
-//                listElemID.add(newItemDialog.getDesc())
+        Row {
+            spacing: 10//(parent.width - addButton.width - delButton.width) / 3
+            height: 40
+            leftPadding: (parent.width - addButton.width - delButton.width) / 3
+            rightPadding: 6
+            bottomPadding: 10
+            Button {
+                id: addButton
+                text: "Добавить"
+                visible: !loginId.isAdmin
+                onClicked: {
+                    newItemDialog.isAdd = true
+                    newItemDialog.visible = true
+                    isAppendNew = true //??
+                }
             }
-        }
-        Button {
-            id: delButton
-            objectName: "delButton"
-            signal delElem(int idNote)
-            text: "Удалить"
-            onClicked: {
-                if(view.currentIndex >=0){
-                    delButton.delElem( listElemID.getId(view.currentIndex) )
-                    listElemID.del(view.currentIndex)
+            Button {
+                id: delButton
+                objectName: "delButton"
+                signal delElem(int idNote)
+                text: "Удалить"
+                visible: !loginId.isAdmin
+                onClicked: {
+                    if (view.currentIndex >= 0) {
+                        delButton.delElem(listElemID.getId(view.currentIndex))
+                        listElemID.del(view.currentIndex)
+                    }
+                }
+            }
+            Button{
+                id: refreshButton
+                objectName: "refreshButton"
+                text: "Обновить"
+                signal refreshData()
+                onClicked: {
+                    refreshButton.refreshData()
                 }
             }
         }
-    }}
+    }
 }

@@ -47,6 +47,27 @@ public:
         QString note;
         QString comment;
         EState  state;
+        bool operator ==(const TDbNote &val){
+            if(this->id != val.id){
+                return false;
+            }
+            if(this->title != val.title){
+                return false;
+            }
+            if(this->note != val.note){
+                return false;
+            }
+            if(this->comment != val.comment){
+                return false;
+            }
+            if(this->state != val.state){
+                return false;
+            }
+            return true;
+        }
+        bool operator !=(const TDbNote &val){
+            return !operator ==(val);
+        }
     };
 private:
     QList<TDbNote> listNote;
@@ -66,6 +87,7 @@ public slots:
     void delElem(int idElem);
     void addNewElem(QString, QString, QString, int);
     void editElem(int id, QString, QString, QString, int);
+    void refreshData();
 signals:
 
 };

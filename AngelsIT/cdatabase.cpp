@@ -200,3 +200,61 @@ void CDataBase::editElem(int id, QString elemCaption, QString elemText, QString 
         query.exec();
     }
 }
+//---------------------------------------------------------------
+//обновление параметров из БД 
+void CDataBase::refreshData(){
+    qDebug(__PRETTY_FUNCTION__);
+    if(!db.isOpen()){
+        return;
+    }
+    // обрабатывать только измененные элементы
+    //listNote.clear();
+    QString queryStr = "SELECT * FROM t_note";
+    QSqlQuery query = db.exec(queryStr);
+    // add sql err !!!
+    QStringList strList;
+    while(query.next()){
+        TDbNote curNote;
+        curNote.id = query.value("id").toInt();
+        curNote.title = query.value("title").toString();
+        curNote.note = query.value("note").toString();
+        curNote.comment = query.value("comment").toString();
+        curNote.state = (EState)query.value("state").toInt();
+        bool isInsert = true;
+        for(auto curNoteInList : listNote){
+            if(curNoteInList.id == curNote.id){
+                isInsert = false;
+                if(curNoteInList != curNote){
+                    isInsert = false;
+                    int curNoteInListInd = listNote.indexOf(curNoteInList);
+                    curNoteInList.title = curNote.title;
+                    curNoteInList.note = curNote.note;
+                    curNoteInList.comment = curNote.comment;
+                    curNoteInList.state = curNote.state;
+                    listNote.takeAt(curNoteInListInd);
+                    listNote.insert(curNoteInListInd, curNoteInList);
+                    //add in list
+                    strList << QString::number (curNote.id);
+                    strList << curNote.title;
+                    strList << curNote.note;
+                    strList << curNote.comment;
+                    strList << QString::number (curNote.state);
+                }
+                break;
+           }
+        }
+        if (isInsert){
+            listNote.append(curNote);
+            //add in list
+            strList << QString::number (curNote.id);
+            strList << curNote.title;
+            strList << curNote.note;
+            strList << curNote.comment;
+            strList << QString::number (curNote.state);
+        }
+    }
+    if (strList.count() > 0){
+        emit refreshDb(QVariant(strList));
+    }
+}
+//

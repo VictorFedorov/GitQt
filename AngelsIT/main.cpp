@@ -8,7 +8,6 @@
 
 
 #include <clistmodel.h>
-#include "csignalhdl.h"
 #include "cdatabase.h"
 
 int main(int argc, char *argv[])
@@ -57,6 +56,12 @@ int main(int argc, char *argv[])
     }
 
 
+    // сигнал удаления записи
+    QObject* refreshButton = root->findChild<QObject*>("refreshButton");
+    if(delButton != nullptr){
+        QObject::connect(refreshButton, SIGNAL(refreshData()),
+                         db, SLOT(refreshData()));
+    }
     if (engine.rootObjects().isEmpty())
         return -1;
 
