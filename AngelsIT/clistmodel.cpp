@@ -123,7 +123,7 @@ void CListModel::del(int curInd){
 }
 //----------------------------------------------------------------------------------------------------------
 int CListModel::getId(int curInd){
-    printf("%d", curInd) ;
+    qDebug("line:%d, %s curInd=%d", __LINE__, __FUNCTION__, curInd) ;
     return listNote.at(curInd).id;
 }
 

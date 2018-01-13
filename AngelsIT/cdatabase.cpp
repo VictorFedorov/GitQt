@@ -169,8 +169,12 @@ void CDataBase::delElem(int idElem){
     }
     QSqlQuery query(db);
     query.prepare("DELETE FROM t_note WHERE t_note.id = :id");
-    query.bindValue("id", idElem);
+    query.bindValue(":id", idElem);
     query.exec();
+    if(query.lastError().type() != QSqlError::NoError){
+        QString err = query.lastError().text();
+        qDebug("err is %s", qPrintable(err));
+    }
 }
 //---------------------------------------------------------------
 //добавление элемента из формы (из модели представления)
