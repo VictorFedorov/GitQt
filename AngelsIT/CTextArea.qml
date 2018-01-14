@@ -1,9 +1,12 @@
-import QtQuick 2.0
+import QtQuick 2.7
 import QtQuick.Controls 2.1
+
 TextArea {
+    id: textAreaID
+    property string colorActive: "#7e7f83" // свойство для хранения цвета
+    property string colorNotActive: "#414856"
     background: Rectangle {
         color: "#414856"
-        border.color: parent.enabled ? "#transparent" : "transparent"
     }
     color: "#d3dae3"
     textFormat: TextEdit.RichText
@@ -15,10 +18,70 @@ TextArea {
     bottomPadding: 0
     selectByMouse: true
     selectionColor: "#5596df"
-        Rectangle {
-            anchors.fill: parent
-            color: "#414856"
-            opacity: 0.5
-    }
+    Rectangle {
+        id: backID
+        anchors.fill: parent
+        color: "red" //"#414856"
+        opacity: 0.5
+        states: [
+            State {
+                name: "StateNotActive"
+                PropertyChanges {
+                    target: backID
+                    color: colorNotActive
+                }
+            },
+            State {
+                name: "StateActive"
+                PropertyChanges {
+                    target: backID
+                    color: colorActive
+                }
+            }
+        ]
+        transitions: [
+            Transition {
+                from: "StateNotActive"
+                to: "StateActive"
+                // Новый текст
+                ColorAnimation {
+                    target: backID
+                    duration: 500
+                }
+            },
+            Transition {
+                to: "StateNotActive"
+                from: "StateActive"
+                // Новый текст
+                ColorAnimation {
+                    target: backID
+                    duration: 500
+                }
+            }
+        ]
+}
 
+        MouseArea {
+            anchors.fill: parent
+            hoverEnabled: true
+            onEntered: {
+                backID.state = "StateActive"
+                textAreaID.forceActiveFocus()
+                //backID.color = "white"
+            }
+            onExited: {
+                //backID.color = "red"
+                backID.state = "StateNotActive"
+            }
+            onDoubleClicked: {
+                textAreaID.selectAll()
+            }
+            onVisibleChanged: {
+                if(visible === true){
+                    backID.state = "StateNotActive"
+                }
+            }
+
+        }
+    //}
 }

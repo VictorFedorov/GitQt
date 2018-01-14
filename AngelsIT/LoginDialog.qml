@@ -97,12 +97,10 @@ Dialog {
             text: ""
             horizontalAlignment: TextInput.AlignHCenter
             verticalAlignment: TextInput.AlignVCenter
-            //cursorVisible: true
             width: logonTextInput.width
             height: logonTextInput.height
             font.pixelSize: 16
             echoMode: TextInput.Password
-//            color: "black"
             Keys.onPressed: {
                 if (event.key === Qt.Key_Tab) {
                     logonTextInput.forceActiveFocus()
