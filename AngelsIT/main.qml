@@ -1,7 +1,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
-import QtQuick.Controls.Material 2.0
+import QtQuick.Controls.Material 2.2
 import io.clistmodel 1.0
 
 ApplicationWindow {
@@ -35,18 +35,21 @@ ApplicationWindow {
     height: 480
     title: qsTr("Notes")
 
-    Material.theme: Material.BlueGray
-    Material.primary: Material.BlueGray
-    Material.accent: Material.Teal
+//    Material.theme: Material.BlueGray
+//    Material.primary: Material.BlueGray
+//    Material.accent: Material.Teal
+//    Material.primary: Material.BlueGray
 
     //    Material.background: Material.LightGreen
     header: ToolBar {
         Rectangle {
             anchors.fill: parent
-            color: 'steelblue'
+            color: "#41454e"
         }
         Label {
             id: dateText
+            color: "#d3dae3"
+
             function set() {
                 text = new Date().toLocaleString(Qt.locale("ru_RU"),
                                                  "dddd d MMMM ,  HH:MM:ss")
@@ -87,7 +90,7 @@ ApplicationWindow {
         clip: true
 
         highlight: Rectangle {
-            color: "steelblue"
+            color: "#5596df"
         }
         highlightFollowsCurrentItem: true
 
@@ -142,7 +145,7 @@ ApplicationWindow {
 
     footer: Rectangle {
         height: 40
-        color: "steelblue"
+        color: "#3e3f49"
 
         id: buttonRow
         Row {
@@ -151,7 +154,7 @@ ApplicationWindow {
             leftPadding: (parent.width - addButton.width - delButton.width) / 3
             rightPadding: 6
             bottomPadding: 10
-            Button {
+            CButton {
                 id: addButton
                 text: "Добавить"
                 visible: !loginId.isAdmin
@@ -161,7 +164,7 @@ ApplicationWindow {
                     isAppendNew = true
                 }
             }
-            Button {
+            CButton {
                 id: delButton
                 objectName: "delButton"
                 signal delElem(int idNote)
@@ -174,7 +177,7 @@ ApplicationWindow {
                     }
                 }
             }
-            Button{
+            CButton{
                 id: refreshButton
                 visible: false
                 objectName: "refreshButton"

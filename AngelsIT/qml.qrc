@@ -4,5 +4,9 @@
         <file>qtquickcontrols2.conf</file>
         <file>EditItemDialog.qml</file>
         <file>LoginDialog.qml</file>
+        <file>CButton.qml</file>
+        <file>CText.qml</file>
+        <file>CTextInput.qml</file>
+        <file>CTextArea.qml</file>
     </qresource>
 </RCC>

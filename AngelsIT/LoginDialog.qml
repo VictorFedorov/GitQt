@@ -1,5 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.2
+import QtQuick.Controls.Material 2.0
+import QtGraphicalEffects 1.0
 
 Dialog {
     visible: true
@@ -38,30 +40,35 @@ Dialog {
         spacing: 20
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
-        Text {
+        CText {
             text: "Имя пользователя"
             font.pixelSize: 20
             anchors.horizontalCenter: parent.horizontalCenter
+            //Material.foreground: color("#F44336")
         }
-        TextInput {
+        CTextInput {
             id: logonTextInput
             selectByMouse: true
-            opacity: 0.5
+
             anchors.horizontalCenter: parent.horizontalCenter
             clip: true
-            Rectangle {
-                width: parent.width
-                height: parent.height
-                color: "skyblue"
-                border.color: "black"
-                border.width: 1
-                radius: 5
-            }
+//            Rectangle {
+//                width: parent.width
+//                height: parent.height
+//                color: "#414856"
+//                opacity: 0.5
+//                border.color: "black"
+//                border.width: 1
+//                radius: 5
+//                 Material.theme: Material.Dark
+
+
+//            }
             text: ""
             horizontalAlignment: TextInput.AlignHCenter
             verticalAlignment: TextInput.AlignVCenter
             cursorVisible: true
-            width: parent.width *2 / 3
+            width: parent.width * 2 / 3
             height: 40
             font.pixelSize: 16
             onVisibleChanged: {
@@ -79,24 +86,14 @@ Dialog {
             }
         }
 
-        Text {
+        CText {
             text: "Пароль"
             font.pixelSize: 20
             anchors.horizontalCenter: parent.horizontalCenter
         }
-        TextInput {
+        CTextInput {
             id: passwdTextInput
-            selectByMouse: true
-            opacity: 0.5
             anchors.horizontalCenter: parent.horizontalCenter
-            Rectangle {
-                width: parent.width
-                height: parent.height
-                color: "skyblue"
-                border.color: "black"
-                border.width: 1
-                radius: 5
-            }
             text: ""
             horizontalAlignment: TextInput.AlignHCenter
             verticalAlignment: TextInput.AlignVCenter
@@ -105,7 +102,7 @@ Dialog {
             height: logonTextInput.height
             font.pixelSize: 16
             echoMode: TextInput.Password
-            color: "black"
+//            color: "black"
             Keys.onPressed: {
                 if (event.key === Qt.Key_Tab) {
                     logonTextInput.forceActiveFocus()
@@ -117,7 +114,7 @@ Dialog {
                 loginId.loginSignal(logonTextInput.text, passwdTextInput.text)
             }
         }
-        Button {
+        CButton {
             id: logonButton
             text: "Вход"
             anchors.horizontalCenter: parent.horizontalCenter

@@ -30,14 +30,12 @@ Dialog {
     //    }
     contentItem: Column {
         spacing: 2
-        Text {
+        CText {
             text: "Название:"
-            color: "navy"
             font.pixelSize: captionSize
         }
 
         Rectangle {
-            color: "lightskyblue"
             clip: true
             border {
                 color: "black"
@@ -45,34 +43,36 @@ Dialog {
             }
             width: parent.width
             height: 20
+            color: "#414856"
+            Flickable {
+                clip: true
+                interactive: true
+                anchors.fill: parent
 
-            TextInput {
+                TextArea.flickable: CTextArea  {
                 id: newNoteCaption
                 text: ""
-                cursorVisible: true
-                wrapMode: TextInput.WordWrap
                 width: parent.width
                 height: parent.height
                 font.pixelSize: textSize
-                Keys.onPressed: {
-                    if (event.key === Qt.Key_Tab) {
-                        newNoteVal.forceActiveFocus()
-                        event.accepted = true
+                    Keys.onPressed: {
+                        if (event.key === Qt.Key_Enter || event.key === Qt.Key_Return || event.key === Qt.Key_Tab) {
+                            newNoteVal.forceActiveFocus()
+                            event.accepted = true
+                        }
+
                     }
-                }
-                onAccepted: {
-                    newNoteVal.forceActiveFocus()
                 }
             }
         }
-        Text {
+        CText {
             text: "Содержание:"
-            color: "navy"
+            //color: "navy"
             font.pixelSize: captionSize
         }
 
         Rectangle {
-            color: "lightskyblue"
+            //color: "lightskyblue"
             border {
                 color: "black"
                 width: 1
@@ -90,17 +90,9 @@ Dialog {
                     id: vbar
                     active: vbar.active
                 }
-                TextArea.flickable: TextArea {
+                TextArea.flickable: CTextArea {
                     id: newNoteVal
                     text: ""
-                    cursorVisible: true
-                    wrapMode: TextInput.WordWrap
-                    textFormat: TextEdit.RichText
-                    leftPadding: 6
-                    rightPadding: 6
-                    selectByMouse: true
-                    topPadding: 0
-                    bottomPadding: 0
                     Keys.onPressed: {
                         if (event.key === Qt.Key_Tab) {
                             newNoteComment.forceActiveFocus()
@@ -110,14 +102,14 @@ Dialog {
                 }
             }
         }
-        Text {
+        CText {
             text: "Комментарий:"
-            color: "navy"
+            //color: "navy"
             font.pixelSize: captionSize
         }
 
         Rectangle {
-            color: "lightskyblue"
+            //color: "lightskyblue"
             clip: true
             border {
                 color: "black"
@@ -136,17 +128,9 @@ Dialog {
                     active: vbar.active
                 }
 
-                TextArea.flickable: TextArea  {
+                TextArea.flickable: CTextArea  {
                 id: newNoteComment
                 text: ""
-                textFormat: TextEdit.RichText
-                cursorVisible: true
-                wrapMode: TextInput.WordWrap
-                leftPadding: 6
-                rightPadding: 6
-                topPadding: 0
-                bottomPadding: 0
-                selectByMouse: true
                 width: parent.width
                 height: parent.height
                 font.pixelSize: textSize
@@ -154,9 +138,9 @@ Dialog {
 
             }
         }
-        Text {
+        CText {
             text: "Состояние:"
-            color: "navy"
+            //color: "navy"
             font.pixelSize: captionSize
         }
 
