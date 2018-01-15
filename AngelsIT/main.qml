@@ -27,11 +27,18 @@ ApplicationWindow {
                 console.log(listNotes[j + 4])
             }
             listElemID.add(myArray)
+        }else{
+            if (i === 1){
+                if (listNotes[0] === "empty"){
+                    console.log("list is empty")
+                    listElemID.del(-1)
+                }
+            }
         }
     }
 
     visible: true
-    width: 320
+    width: 480
     height: 480
     title: qsTr("Notes")
 

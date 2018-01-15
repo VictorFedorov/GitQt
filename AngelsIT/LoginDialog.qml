@@ -6,6 +6,7 @@ import QtGraphicalEffects 1.0
 Dialog {
     visible: true
     width: parent.width * 0.75
+    height: parent.height
     objectName: "loginId"
     id : loginId
     signal loginSignal(string msg, string msg)

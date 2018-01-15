@@ -117,9 +117,16 @@ void CListModel::curItemView(int curInd){
 }
 //----------------------------------------------------------------------------------------------------------
 void CListModel::del(int curInd){
-   listNote.removeAt(curInd);
-   beginRemoveRows(QModelIndex(),curInd,curInd);
-   endRemoveRows();
+    if(curInd >= 0){
+
+        listNote.removeAt(curInd);
+        beginRemoveRows(QModelIndex(),curInd,curInd);
+        endRemoveRows();
+    }else{
+        beginRemoveRows(QModelIndex(),0, listNote.count());
+        listNote.clear();
+        endRemoveRows();
+    }
 }
 //----------------------------------------------------------------------------------------------------------
 int CListModel::getId(int curInd){

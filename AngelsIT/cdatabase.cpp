@@ -4,6 +4,7 @@
 #include <QSqlError>
 #include <QTimer>
 #include <QFile>
+#include <QSqlResult>
 //---------------------------------------------------------------
 CDataBase::CDataBase(QObject *parent) : QObject(parent)
 {
@@ -262,11 +263,16 @@ void CDataBase::refreshData(){
         return;
     }
     // обрабатывать только измененные элементы
+    QStringList strList;
     QSqlQuery query(db);
     query.exec("SELECT * FROM t_note");
-    // add sql err !!!
-    QStringList strList;
+    if(query.lastError().type() != QSqlError::NoError){
+        QString err = query.lastError().text();
+        qDebug("line:%d, %s err is " + err.toLatin1(), __LINE__, __PRETTY_FUNCTION__);
+    }
+    bool isEmptyRes = true;
     while(query.next()){
+        isEmptyRes = false;
         TDbNote curNote;
         curNote.id = query.value("id").toInt();
         curNote.title = query.value("title").toString();
@@ -305,6 +311,10 @@ void CDataBase::refreshData(){
             strList << curNote.comment;
             strList << QString::number (curNote.state);
         }
+    }
+    if(isEmptyRes){
+        strList.append("empty");
+        qDebug("there is empty query result");
     }
     if (strList.count() > 0){
         emit refreshDb(QVariant(strList));
