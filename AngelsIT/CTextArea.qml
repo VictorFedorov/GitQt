@@ -66,7 +66,7 @@ TextArea {
             hoverEnabled: true
             onEntered: {
                 backID.state = "StateActive"
-                textAreaID.forceActiveFocus()
+                //textAreaID.forceActiveFocus()
                 //backID.color = "white"
             }
             onExited: {
@@ -81,6 +81,10 @@ TextArea {
                     backID.state = "StateNotActive"
                 }
             }
+            onClicked: {
+                textAreaID.forceActiveFocus();
+            }
+
 
         }
     //}

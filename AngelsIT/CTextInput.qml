@@ -59,10 +59,13 @@ TextInput {
         hoverEnabled: true
         onEntered: {
             back.state = "StateActive"
-            textID.forceActiveFocus();
+            //textID.forceActiveFocus();
         }
         onExited: {
             back.state = "StateNotActive"
+        }
+        onClicked: {
+            textID.forceActiveFocus();
         }
         onDoubleClicked: {
             textID.selectAll()
