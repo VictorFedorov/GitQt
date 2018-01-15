@@ -31,7 +31,7 @@ ApplicationWindow {
     }
 
     visible: true
-    width: 480
+    width: 320
     height: 480
     title: qsTr("Notes")
 
@@ -82,15 +82,15 @@ ApplicationWindow {
             active: vbar.active
         }
 
-        anchors.margins: 10
+        anchors.margins: 5
         width: parent.width
         height: parent.height
-        spacing: 6
-        model: listElemID
+             spacing: 1
+             model: listElemID
         clip: true
 
         highlight: Rectangle {
-            color: "#5596df"
+            color: "#d3dae3"
         }
         highlightFollowsCurrentItem: true
 
@@ -116,10 +116,10 @@ ApplicationWindow {
                 anchors.fill: parent
                 radius: 5
                 color: model.color
-                border {
-                    color: "black"
-                    width: 1
-                }
+//                border {
+//                    color: "black"
+//                    width: 1
+//                }
 
                 Text {
                     anchors.centerIn: parent

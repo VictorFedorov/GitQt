@@ -111,10 +111,10 @@ Dialog {
         Rectangle {
             //color: "lightskyblue"
             clip: true
-            border {
-                color: "black"
-                width: 1
-            }
+//            border {
+//                color: "black"
+//                width: 1
+//            }
             width: parent.width
             height: 40
             Flickable {

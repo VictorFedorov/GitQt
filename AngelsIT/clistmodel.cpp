@@ -30,15 +30,15 @@ QVariant CListModel::data(const QModelIndex &index, int role) const
         QString color;
         switch(curNote.state){
             case CDataBase::StateNew:{
-              color = "white";
+              color = "#a9abad";
               break;
             }
             case CDataBase::StateWork:{
-              color = "#FF4720";
+              color = "#e94a63";
               break;
             }
             case CDataBase::StateDone:{
-              color = "#90CC29";
+              color = "#48A25A";
               break;
             }
         }
