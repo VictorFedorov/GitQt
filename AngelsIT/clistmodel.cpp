@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------------------------------------
+ //----------------------------------------------------------------------------------------------------------
 #include "clistmodel.h"
 #include <QGuiApplication>
 #include <QDebug>
@@ -129,6 +129,18 @@ void CListModel::del(int curInd){
     }
 }
 //----------------------------------------------------------------------------------------------------------
+void CListModel::delItem(int curId){
+    for(auto curNote : listNote){
+        if(curNote.id == curId){
+            int delInd = listNote.indexOf(curNote);
+            listNote.removeAt(delInd);
+            beginRemoveRows(QModelIndex(),delInd,delInd);
+            endRemoveRows();
+
+            break;
+        }
+    }
+}//----------------------------------------------------------------------------------------------------------
 int CListModel::getId(int curInd){
     qDebug("line:%d, %s curInd=%d", __LINE__, __FUNCTION__, curInd) ;
     return listNote.at(curInd).id;

@@ -1,12 +1,12 @@
-import QtQuick 2.0
-import QtQuick.Controls 2.2
-import QtQuick.Controls.Material 2.1
-import QtQuick.Controls.Styles 1.4
+import QtQuick 2.7
+import QtQuick.Controls 2.3
+import QtQuick.Window 2.2
+import QtGraphicalEffects 1.0
 Button {
     text: qsTr("Button")
     id: control
 
-    contentItem: Text {
+ contentItem: Text {
         text: control.text
         font: control.font
         opacity: enabled ? 1.0 : 0.3
@@ -14,8 +14,7 @@ Button {
         elide: Text.ElideRight
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-
-}
+  }
 //    background: Rectangle {
 ////                  implicitWidth: 100
 ////                  implicitHeight: 25

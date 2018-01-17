@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>add-event.png</file>
+        <file>del-event.png</file>
+    </qresource>
+</RCC>

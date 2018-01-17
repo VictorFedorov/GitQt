@@ -1,7 +1,7 @@
-import QtQuick 2.7
-import QtQuick.Controls 2.2
+import QtQuick 2.6
+import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
-import QtQuick.Controls.Material 2.2
+//import QtQuick.Controls.Material 2.2
 import io.clistmodel 1.0
 
 ApplicationWindow {
@@ -35,6 +35,11 @@ ApplicationWindow {
                 }
             }
         }
+    }
+    function deleteItem(itemId){
+        console.log("delete item ")
+        console.log(itemId)
+        listElemID.delItem(itemId)
     }
 
     visible: true
@@ -151,19 +156,32 @@ ApplicationWindow {
     }
 
     footer: Rectangle {
-        height: 40
+        height: 50
         color: "#3e3f49"
 
         id: buttonRow
         Row {
             spacing: (parent.width - addButton.width - delButton.width) / 3
-            height: 40
+            height: parent.height
             leftPadding: (parent.width - addButton.width - delButton.width) / 3
             rightPadding: 6
             bottomPadding: 10
             CButton {
                 id: addButton
-                text: "Добавить"
+                height: parent.height
+                width: parent.width/2-5
+                contentItem: Image{
+                    source: "qrc:/add-event.png"
+                    fillMode: Image.PreserveAspectFit
+                }
+
+//                Image {
+//                    id : iconID
+//                     source: "qrc:/add-event.png"
+//                 }
+
+
+                //text: "Добавить"
                 visible: !loginId.isAdmin
                 onClicked: {
                     newItemDialog.isAdd = true
@@ -171,9 +189,16 @@ ApplicationWindow {
                     isAppendNew = true
                 }
             }
+
             CButton {
                 id: delButton
                 objectName: "delButton"
+                height: parent.height
+                width: parent.width/2-5
+                contentItem: Image{
+                    source: "qrc:/del-event.png"
+                    fillMode: Image.PreserveAspectFit
+                }
                 signal delElem(int idNote)
                 text: "Удалить"
                 visible: !loginId.isAdmin

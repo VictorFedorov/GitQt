@@ -38,6 +38,8 @@ int main(int argc, char *argv[])
 }
     QObject::connect(db, SIGNAL(refreshDb(QVariant)),
                          root, SLOT(refreshDb(QVariant)));
+    QObject::connect(db, SIGNAL(deleteItem(QVariant)),
+                         root, SLOT(deleteItem(QVariant)));
 
 
     // сигнал удаления записи
@@ -61,7 +63,7 @@ int main(int argc, char *argv[])
     if(delButton != nullptr){
         QObject::connect(refreshButton, SIGNAL(refreshData()),
                          db, SLOT(refreshData()));
-    }
+     }
     if (engine.rootObjects().isEmpty())
         return -1;
 

@@ -24,6 +24,7 @@ class CListModel : public QAbstractListModel
         Q_INVOKABLE void curItemView(int curInd);
         //удалить элемент, вызывается из формы
         Q_INVOKABLE void del(int curInd);
+        Q_INVOKABLE void delItem(int curId);
         //возвращает id элемента (по индексу на форме), вызывается из формы
         Q_INVOKABLE int getId(int curInd);
         //возвращает описание элемента, поля по порядку, вызывается из формы

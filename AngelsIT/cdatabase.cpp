@@ -271,6 +271,8 @@ void CDataBase::refreshData(){
         qDebug("line:%d, %s err is " + err.toLatin1(), __LINE__, __PRETTY_FUNCTION__);
     }
     bool isEmptyRes = true;
+    QList<TDbNote> newlistNote;
+
     while(query.next()){
         isEmptyRes = false;
         TDbNote curNote;
@@ -279,37 +281,54 @@ void CDataBase::refreshData(){
         curNote.note = query.value("note").toString();
         curNote.comment = query.value("comment").toString();
         curNote.state = (EState)query.value("state").toInt();
-        bool isInsert = true;
-        for(auto curNoteInList : listNote){
-            if(curNoteInList.id == curNote.id){
-                isInsert = false;
-                if(curNoteInList != curNote){
-                    isInsert = false;
-                    int curNoteInListInd = listNote.indexOf(curNoteInList);
-                    curNoteInList.title = curNote.title;
-                    curNoteInList.note = curNote.note;
-                    curNoteInList.comment = curNote.comment;
-                    curNoteInList.state = curNote.state;
-                    listNote.takeAt(curNoteInListInd);
-                    listNote.insert(curNoteInListInd, curNoteInList);
-                    //add in list
+        newlistNote.append(curNote);
+     }
+
+    //удалить из старого списка элементы, которых нет в новом сиске
+    for(auto curNote : listNote){
+        bool isFind = false;
+        for(auto newNote : newlistNote){
+            if(curNote.id == newNote.id){
+                isFind = true;
+                break;
+            }
+        }
+        if(!isFind){
+            emit deleteItem(QVariant(curNote.id));
+            listNote.removeOne(curNote);
+        }
+    }
+
+    //переписать существующие элемнты, добавить новые
+    for(auto newNote : newlistNote){
+        bool isContain = false;
+        for(auto curNote : listNote){
+            if(newNote.id == curNote.id){
+                //в старом листе нашелся элемент с таким же id
+                isContain = true;
+                if (curNote != newNote){
+                    //запись изменилась
+                    int curNoteInListInd = listNote.indexOf(curNote);
+                    curNote = newNote;
                     strList << QString::number (curNote.id);
                     strList << curNote.title;
                     strList << curNote.note;
                     strList << curNote.comment;
                     strList << QString::number (curNote.state);
+                    listNote.takeAt(curNoteInListInd);
+                    listNote.insert(curNoteInListInd, curNote);
+                    break;
                 }
-                break;
-           }
+            }
         }
-        if (isInsert){
-            listNote.append(curNote);
+        if(!isContain){
+            listNote.append(newNote);
             //add in list
-            strList << QString::number (curNote.id);
-            strList << curNote.title;
-            strList << curNote.note;
-            strList << curNote.comment;
-            strList << QString::number (curNote.state);
+            strList << QString::number (newNote.id);
+            strList << newNote.title;
+            strList << newNote.note;
+            strList << newNote.comment;
+            strList << QString::number (newNote.state);
         }
     }
     if(isEmptyRes){

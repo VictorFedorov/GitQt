@@ -19,6 +19,7 @@ signals:
     // Сигнал для передачи данных в qml-интерфейс
     void loginDb(QVariant, QVariant); //удачно/неудачно подключились к БД; пользователь/администратор
     void refreshDb(QVariant); //отобразить обновленные данные БД
+    void deleteItem(QVariant); //
 private:
     // Сам объект базы данных, с которым будет производиться работа
     QSqlDatabase    db;
