@@ -18,16 +18,36 @@ Dialog {
     property int textSize: 16
     property int captionSize: 16
     font.pixelSize: captionSize
+    opacity: 0
     //установить id текущей записи
     function setCurId(newCurId){
         curId = newCurId
     }
-
+    function animShow(){
+        visible = true;
+    }
     //    header: Text {
     //        text: "Редактирование записи"
     //        font.pixelSize: captionSize
     //        anchors.horizontalCenter: parent.horizontalCenter
     //    }
+    PropertyAnimation {
+        id: animHideId
+        target: newItemDialog;
+        property: "opacity";
+        to: 0
+        duration: 500
+        easing: Easing.InQuint
+    }
+    PropertyAnimation {
+        id: animShowId
+        target: newItemDialog;
+        property: "opacity";
+        easing: Easing.Linear
+        from: 0
+        to: 100
+        duration: 5000
+    }
     contentItem: Column {
         spacing: 2
         CText {
@@ -180,6 +200,7 @@ Dialog {
     onAccepted: {
         // по нажатию на ОК
         console.log("onAccepted")
+         animHide.start();
         // 1. если добавляли элемент, то добавить его в БД
         // 2. если редактировали элемент, то обновить его в БД
         // по-идее это можно совместить, проверяя по id записи
@@ -260,8 +281,12 @@ Dialog {
                                          })
                 newNoteState.currentIndex = 0
             }
-
-        }
+         }
+    }
+    onAboutToShow: {
+        console.log("onAboutToShow")
+        opacity = 0;
+        animShowId.start();
     }
     function clear() {
         newNoteState.enabled = false

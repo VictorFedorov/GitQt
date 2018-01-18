@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>add-event.png</file>
         <file>del-event.png</file>
+        <file>user.png</file>
+        <file>login.png</file>
     </qresource>
 </RCC>

@@ -183,9 +183,11 @@ ApplicationWindow {
 
                 //text: "Добавить"
                 visible: !loginId.isAdmin
-                onClicked: {
+                onClicked:
+                {
                     newItemDialog.isAdd = true
-                    newItemDialog.visible = true
+                    //newItemDialog.visible = true
+                    newItemDialog.animShow();
                     isAppendNew = true
                 }
             }

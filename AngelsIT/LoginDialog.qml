@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.6
 import QtQuick.Controls 2.2
 import QtQuick.Controls.Material 2.0
 import QtGraphicalEffects 1.0
@@ -39,17 +39,25 @@ Dialog {
     //        }
     contentItem: Column {
         spacing: 20
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
-        CText {
-            text: "Имя пользователя"
-            font.pixelSize: 20
+//        anchors.horizontalCenter: parent.horizontalCenter
+//        anchors.verticalCenter: parent.verticalCenter
+       topPadding :  45
+        anchors.centerIn: parent
+        Image {
+            id: loginIdname
+            source: "qrc:/user.png"
             anchors.horizontalCenter: parent.horizontalCenter
-            //Material.foreground: color("#F44336")
         }
-        CTextInput {
+//        CText {
+//            text: "Имя пользователя"
+//            font.pixelSize: 20
+//            anchors.horizontalCenter: parent.horizontalCenter
+//            //Material.foreground: color("#F44336")
+//        }
+        TextField {
             id: logonTextInput
             selectByMouse: true
+            placeholderText: "имя пользователя"
 
             anchors.horizontalCenter: parent.horizontalCenter
             clip: true
@@ -73,8 +81,8 @@ Dialog {
             height: 40
             font.pixelSize: 16
             onVisibleChanged: {
-                if (visible)
-                    logonTextInput.forceActiveFocus()
+               // if (visible)
+                    //logonTextInput.forceActiveFocus()
             }
             Keys.onPressed: {
                 if (event.key === Qt.Key_Tab) {
@@ -87,15 +95,17 @@ Dialog {
             }
         }
 
-        CText {
-            text: "Пароль"
-            font.pixelSize: 20
-            anchors.horizontalCenter: parent.horizontalCenter
-        }
-        CTextInput {
+//        CText {
+//            text: "Пароль"
+//            font.pixelSize: 18
+//            anchors.horizontalCenter: parent.horizontalCenter
+//        }
+        TextField {
             id: passwdTextInput
+
             anchors.horizontalCenter: parent.horizontalCenter
             text: ""
+            placeholderText: "пароль"
             horizontalAlignment: TextInput.AlignHCenter
             verticalAlignment: TextInput.AlignVCenter
             width: logonTextInput.width
@@ -116,12 +126,13 @@ Dialog {
         CButton {
             id: logonButton
             text: "Вход"
+             width: logonTextInput.width
             anchors.horizontalCenter: parent.horizontalCenter
             onPressed: {
                 // make some login
-                //close();
                 loginId.loginSignal(logonTextInput.text, passwdTextInput.text)
             }
+
         }
     }
 }
