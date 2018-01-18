@@ -18,44 +18,38 @@ Dialog {
     property int textSize: 16
     property int captionSize: 16
     font.pixelSize: captionSize
-    opacity: 0
+    opacity: 0.0
     //установить id текущей записи
     function setCurId(newCurId){
         curId = newCurId
     }
     function animShow(){
         visible = true;
+        newItemDialog.opacity=0.0
     }
     //    header: Text {
     //        text: "Редактирование записи"
     //        font.pixelSize: captionSize
     //        anchors.horizontalCenter: parent.horizontalCenter
     //    }
-    PropertyAnimation {
-        id: animHideId
-        target: newItemDialog;
-        property: "opacity";
-        to: 0
-        duration: 500
-        easing: Easing.InQuint
-    }
-    PropertyAnimation {
-        id: animShowId
-        target: newItemDialog;
-        property: "opacity";
-        easing: Easing.Linear
-        from: 0
-        to: 100
-        duration: 5000
-    }
+    enter: Transition {
+             NumberAnimation { property: "opacity"; from: 0.0; to: 1.0 ; duration: 1000}
+         }
+    exit: Transition {
+             NumberAnimation { property: "opacity"; from: 1.0; to: 0.0 ; duration: 1000}
+         }
     contentItem: Column {
+        id : columnID
+//        opacity : 0.5
         spacing: 2
         CText {
+            id : captionTextId
             text: "Название:"
             font.pixelSize: captionSize
         }
 
         Rectangle {
+            id:captionId
             clip: true
             border {
                 color: "black"
@@ -284,9 +278,12 @@ Dialog {
          }
     }
     onAboutToShow: {
-        console.log("onAboutToShow")
-        opacity = 0;
-        animShowId.start();
+        //animShowId.start();
+        opacity = 0.0
+
+    }
+    onAboutToHide: {
+        //animHideId.start();
     }
     function clear() {
         newNoteState.enabled = false
