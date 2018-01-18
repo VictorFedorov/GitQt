@@ -1,5 +1,5 @@
 import QtQuick 2.6
-import QtQuick.Controls 2.3
+import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 //import QtQuick.Controls.Material 2.2
 import io.clistmodel 1.0
@@ -186,9 +186,9 @@ ApplicationWindow {
                 onClicked:
                 {
                     newItemDialog.isAdd = true
-                    //newItemDialog.visible = true
-                    newItemDialog.animShow();
                     isAppendNew = true
+                    newItemDialog.opacity = 0.0
+                    newItemDialog.open();
                 }
             }
 
