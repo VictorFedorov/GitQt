@@ -34,11 +34,11 @@ QVariant CListModel::data(const QModelIndex &index, int role) const
               break;
             }
             case CDataBase::StateWork:{
-              color = "#e94a63";
+              color = "#fc536d";
               break;
             }
             case CDataBase::StateDone:{
-              color = "#48A25A";
+              color = "#78d176";
               break;
             }
         }

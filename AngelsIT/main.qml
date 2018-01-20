@@ -47,12 +47,6 @@ ApplicationWindow {
     height: 480
     title: qsTr("Notes")
 
-//    Material.theme: Material.BlueGray
-//    Material.primary: Material.BlueGray
-//    Material.accent: Material.Teal
-//    Material.primary: Material.BlueGray
-
-    //    Material.background: Material.LightGreen
     header: ToolBar {
         Rectangle {
             anchors.fill: parent
@@ -93,6 +87,42 @@ ApplicationWindow {
             id: vbar
             active: vbar.active
         }
+        //анимация при добавлении элемента в список
+        add: Transition {
+            ParallelAnimation {
+                NumberAnimation {
+                    property: "opacity";
+                    from: 0
+                    to: 1.0;
+
+                    duration: 2000 }
+            NumberAnimation {
+                property: "x";
+                from: view.width/3;
+                duration: 1000
+                easing.type: Easing.OutCirc;
+            }
+            NumberAnimation {
+                property: "y";
+                from: -100;
+                duration: 1000
+                easing.type: Easing.OutCirc;
+            }
+
+            }
+         }
+
+        remove: Transition {
+            ParallelAnimation {
+                NumberAnimation { property: "opacity"; to: 0; duration: 2000 }
+                NumberAnimation {
+                    properties: "x,y";
+                    to: view.height;
+                    duration: 2000
+                    easing.type: Easing.OutCirc;
+                }
+            }
+        }
 
         anchors.margins: 5
         width: parent.width
@@ -102,10 +132,12 @@ ApplicationWindow {
         clip: true
 
         highlight: Rectangle {
+            id:higlightRectId
             color: "#d3dae3"
+            //color: "black"
         }
         highlightFollowsCurrentItem: true
-
+        highlightMoveVelocity : 100
         EditItemDialog {
             id: newItemDialog
             isAdmin: loginId.isAdmin
@@ -134,21 +166,30 @@ ApplicationWindow {
 //                }
 
                 Text {
+                    id:textItemDelegateId
                     anchors.centerIn: parent
                     renderType: Text.NativeRendering
-                    text: "%1%2".arg(model.text).arg(isCurrent ? " *" : "")
-                }
+                    //text: "%1%2".arg(model.text).arg(isCurrent ? " *" : "")
+                    text: (model.text)
+               }
 
                 MouseArea {
                     anchors.fill: parent
                     onClicked: view.currentIndex = model.index
+                    hoverEnabled: true
                     onDoubleClicked: {
-
                         listElemID.curItemView(model.index)
                         newItemDialog.isEdit = true
                         newItemDialog.visible = true
                         newItemDialog.setCurId(listElemID.getId(model.index))
                         newItemDialog.showItem(listElemID.getItem(model.index))
+                    }
+                    onEntered:{
+                        //view.currentIndex = model.index
+                        textItemDelegateId.font.weight = Font.Bold
+                    }
+                    onExited:{
+                        textItemDelegateId.font.weight = Font.Thin
                     }
                 }
             }

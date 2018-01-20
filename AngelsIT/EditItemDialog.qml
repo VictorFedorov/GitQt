@@ -6,6 +6,7 @@ Dialog {
     objectName: "newItemDialog"
     property int curState: 0
     property int curId: 0
+    property int shadowTimer: 750
     property bool isAdd: false
     property bool isEdit: false
     property bool isAdmin: false // 0 - user, 1 - admin
@@ -33,10 +34,10 @@ Dialog {
     //        anchors.horizontalCenter: parent.horizontalCenter
     //    }
     enter: Transition {
-             NumberAnimation { property: "opacity"; from: 0.0; to: 1.0 ; duration: 1000}
+             NumberAnimation { property: "opacity"; from: 0.0; to: 1.0 ; duration: shadowTimer}
          }
     exit: Transition {
-             NumberAnimation { property: "opacity"; from: 1.0; to: 0.0 ; duration: 1000}
+             NumberAnimation { property: "opacity"; from: 1.0; to: 0.0 ; duration: shadowTimer}
          }
     contentItem: Column {
         id : columnID
@@ -194,7 +195,6 @@ Dialog {
     onAccepted: {
         // по нажатию на ОК
         console.log("onAccepted")
-         animHide.start();
         // 1. если добавляли элемент, то добавить его в БД
         // 2. если редактировали элемент, то обновить его в БД
         // по-идее это можно совместить, проверяя по id записи
