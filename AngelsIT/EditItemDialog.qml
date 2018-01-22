@@ -12,7 +12,6 @@ Dialog {
     property bool isAdmin: false // 0 - user, 1 - admin
     signal addNewElem(string msgCapt, string msgText, string msgCom, int msgState)
     signal editElem(int curId, string msgCapt, string msgText, string msgCom, int msgState)
-
     visible: false
     title: " "
     width: parent.width
@@ -33,9 +32,11 @@ Dialog {
     //        font.pixelSize: captionSize
     //        anchors.horizontalCenter: parent.horizontalCenter
     //    }
+    //анимация при появлении окна
     enter: Transition {
              NumberAnimation { property: "opacity"; from: 0.0; to: 1.0 ; duration: shadowTimer}
          }
+    //анимация при закрытии окна
     exit: Transition {
              NumberAnimation { property: "opacity"; from: 1.0; to: 0.0 ; duration: shadowTimer}
          }
