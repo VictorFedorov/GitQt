@@ -79,6 +79,10 @@ ApplicationWindow {
 
     CListModel {
         id: listElemID
+        onStateChanged: {
+            console.log("state changed ", id, newState)
+            //testAnimId.start()
+        }
     }
 
     ListView {
@@ -87,6 +91,7 @@ ApplicationWindow {
             id: vbar
             active: vbar.active
         }
+
         //анимация при добавлении элемента в список
         add: Transition {
             ParallelAnimation {
@@ -123,7 +128,11 @@ ApplicationWindow {
                 }
             }
         }
-
+        populate: Transition {
+            ParallelAnimation {
+                NumberAnimation { property: "opacity"; to: 0; duration: 2000 }
+             }
+        }
         anchors.margins: 5
         width: parent.width
         height: parent.height
@@ -137,34 +146,43 @@ ApplicationWindow {
             //color: "black"
         }
         highlightFollowsCurrentItem: true
-        highlightMoveVelocity : 100
+        highlightMoveVelocity : 300
         EditItemDialog {
             id: newItemDialog
             isAdmin: loginId.isAdmin
             onEditElem: {
                 listElemID.editItem(getDesc()) //передать параметры в модельное представление
             }
+
         }
 
         delegate: Item {
             id: listDelegate
+            Behavior on scale
+            {
+                NumberAnimation
+                {
+                    duration: 400
+                }   // NumberAnimation
+            }   // Behavior
 
             property var view: ListView.view
             property var isCurrent: ListView.isCurrentItem
 
             width: view.width
             height: 40
+            ColorAnimation on color { id: colorID; to: "purple"; duration: 8000 }
+            PropertyAnimation{
+                id:myAnimation
+                property:
+            }
 
             Rectangle {
+                id: listDelegateRect
                 anchors.margins: 5
                 anchors.fill: parent
                 radius: 5
                 color: model.color
-//                border {
-//                    color: "black"
-//                    width: 1
-//                }
-
                 Text {
                     id:textItemDelegateId
                     anchors.centerIn: parent
@@ -186,11 +204,14 @@ ApplicationWindow {
                     }
                     onEntered:{
                         //view.currentIndex = model.index
-                        textItemDelegateId.font.weight = Font.Bold
+                        //textItemDelegateId.font.weight = Font.Bold
+                        listDelegate.scale = 1.3
                     }
                     onExited:{
-                        textItemDelegateId.font.weight = Font.Thin
+                        //textItemDelegateId.font.weight = Font.Thin
+                        listDelegate.scale = 1
                     }
+
                 }
             }
         }

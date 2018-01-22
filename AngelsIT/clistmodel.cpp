@@ -184,10 +184,17 @@ void CListModel::editItem(QStringList strList){
         return;
     }
     curNote->comment = strList[3];
-    curNote->state = (CDataBase::EState)strList[4].toInt(&ok, 10);
+    CDataBase::EState newState = (CDataBase::EState)strList[4].toInt(&ok, 10);
+
+
     if (!ok){
         qWarning("%s err convert state", __PRETTY_FUNCTION__);
-    }
+        return; //??
+    }else
+        if (curNote->state != newState){
+            curNote->state = newState;
+            emit stateChanged(curNote->id, curNote->state);
+        }
     listNote.takeAt(curItemInd);
     listNote.insert(curItemInd, *curNote);
     QModelIndex index = createIndex(curItemInd, 0, static_cast<void *>(0));
