@@ -64,28 +64,42 @@ TextArea {
         MouseArea {
             anchors.fill: parent
             hoverEnabled: true
+            property int selStart:0
+            property int selEnd:0
+            property bool isSelected: false
             onEntered: {
                 backID.state = "StateActive"
-                //textAreaID.forceActiveFocus()
-                //backID.color = "white"
             }
             onExited: {
-                //backID.color = "red"
-                backID.state = "StateNotActive"
+                 backID.state = "StateNotActive"
             }
             onDoubleClicked: {
-                textAreaID.selectAll()
+                parent.selectAll()
             }
             onVisibleChanged: {
                 if(visible === true){
                     backID.state = "StateNotActive"
                 }
             }
-            onClicked: {
-                textAreaID.forceActiveFocus();
+            onClicked:  {
+                //parent.cursorPosition = parent.positionAt(mouseX, mouseY)
             }
 
-
+            onPressed:  {
+                isSelected = true
+                selStart = parent.positionAt(mouseX, mouseY)
+            }
+            onReleased:  {
+                selEnd = parent.positionAt(mouseX, mouseY)
+                parent.select(selStart, selEnd)
+                isSelected = false
+            }
+            onMouseXChanged: {
+                if(isSelected){
+                    selEnd = parent.positionAt(mouseX, mouseY)
+                    parent.select(selStart, selEnd)
+                }
+            }
         }
     //}
 }

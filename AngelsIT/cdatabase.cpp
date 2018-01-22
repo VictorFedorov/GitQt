@@ -6,6 +6,8 @@
 #include <QFile>
 #include <QSqlResult>
 //---------------------------------------------------------------
+#define DRefreshTimer 1000
+//---------------------------------------------------------------
 CDataBase::CDataBase(QObject *parent) : QObject(parent)
 {
     //в ресурсы базу данных добавлять нельзя
@@ -88,7 +90,6 @@ bool CDataBase::connectToDataBase(QString username, QString password, QString ho
          qDebug( "line:%d, %s " + str.toLatin1(), __LINE__, __PRETTY_FUNCTION__);
     }
 
-    QTimer::singleShot(3000, this, SLOT(refreshData()));
     return isOpen;
 }
 
@@ -116,6 +117,8 @@ void CDataBase::login(QString userName,QString userPas){
                 // 2. Запросить и отобразить список заявок
                  refreshDbData();
                 emit loginDb(QVariant(true), QVariant((int)curUser.role));
+                QTimer::singleShot(3000, this, SLOT(refreshData()));
+
             } else{
                 emit loginDb(QVariant(false), QVariant(false));
             }
@@ -257,7 +260,7 @@ void CDataBase::editElem(int id, QString elemCaption, QString elemText, QString 
 //---------------------------------------------------------------
 //обновление параметров из БД 
 void CDataBase::refreshData(){
-    QTimer::singleShot(5000, this, SLOT(refreshData()));
+    QTimer::singleShot(DRefreshTimer, this, SLOT(refreshData()));
     qDebug(__PRETTY_FUNCTION__);
     if(!db.isOpen()){
         return;

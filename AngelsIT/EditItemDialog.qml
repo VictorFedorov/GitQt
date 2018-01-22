@@ -23,10 +23,6 @@ Dialog {
     function setCurId(newCurId){
         curId = newCurId
     }
-    function animShow(){
-        visible = true;
-        newItemDialog.opacity=0.0
-    }
     //    header: Text {
     //        text: "Редактирование записи"
     //        font.pixelSize: captionSize
@@ -42,7 +38,6 @@ Dialog {
          }
     contentItem: Column {
         id : columnID
-//        opacity : 0.5
         spacing: 2
         CText {
             id : captionTextId
@@ -62,7 +57,7 @@ Dialog {
             color: "#414856"
             Flickable {
                 clip: true
-                interactive: true
+                interactive: false
                 anchors.fill: parent
 
                 TextArea.flickable: CTextArea  {
@@ -99,7 +94,7 @@ Dialog {
             Flickable {
                 id: flick
                 clip: true
-                interactive: true
+                interactive: false
                 anchors.fill: parent
 
                 ScrollBar.vertical: ScrollBar {
@@ -153,13 +148,18 @@ Dialog {
                 activeFocusOnPress : true
                 selectByMouse: true
                 selectByKeyboard: true
-                MouseArea{
-                    anchors.fill: newNoteComment
-                    onPressed: {
-                        newNoteComment.cursorPosition = newNoteComment.positionAt(mouseX, mouseY)
-                        console.log("asdd")
-                    }
-                }
+//                MouseArea{
+//                    anchors.fill: newNoteComment
+//                    onPressed: {
+//                        newNoteComment.cursorPosition = newNoteComment.positionAt(mouseX, mouseY)
+//                        console.log("asdd")
+//                    }
+//                    onClicked:  {
+//                        newNoteComment.cursorPosition = newNoteComment.positionAt(mouseX, mouseY)
+//                        console.log("asdd")
+//                    }
+
+//                }
 
             }
 
@@ -290,12 +290,7 @@ Dialog {
          }
     }
     onAboutToShow: {
-        //animShowId.start();
         opacity = 0.0
-
-    }
-    onAboutToHide: {
-        //animHideId.start();
     }
     function clear() {
         newNoteState.enabled = false
