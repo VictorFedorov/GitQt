@@ -32,8 +32,6 @@ class CListModel : public QAbstractListModel
         //редактировать текущий элемент, на входе новые значения
         Q_INVOKABLE void editItem(QStringList strList);
 
-        signals:
-        void stateChanged(int id,int newState);
 
     private:
         //список заявок

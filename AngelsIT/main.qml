@@ -79,10 +79,6 @@ ApplicationWindow {
 
     CListModel {
         id: listElemID
-        onStateChanged: {
-            console.log("state changed ", id, newState)
-            //testAnimId.start()
-        }
     }
 
     ListView {
@@ -128,11 +124,6 @@ ApplicationWindow {
                 }
             }
         }
-        populate: Transition {
-            ParallelAnimation {
-                NumberAnimation { property: "opacity"; to: 0; duration: 2000 }
-             }
-        }
         anchors.margins: 5
         width: parent.width
         height: parent.height
@@ -169,20 +160,49 @@ ApplicationWindow {
             property var view: ListView.view
             property var isCurrent: ListView.isCurrentItem
 
-            width: view.width
+            width: view.width-10
             height: 40
-            ColorAnimation on color { id: colorID; to: "purple"; duration: 8000 }
-            PropertyAnimation{
-                id:myAnimation
-                property:
-            }
-
+            //ColorAnimation { id: colorID; to: "purple"; duration: 8000 }
             Rectangle {
                 id: listDelegateRect
                 anchors.margins: 5
                 anchors.fill: parent
                 radius: 5
                 color: model.color
+
+                Behavior on color {
+                    //ColorAnimation { target: listDelegateRect; to: "yellow"; duration: 2500 }
+                      ParallelAnimation {
+                          SequentialAnimation {
+                               ColorAnimation {
+                                   target: listDelegateRect;
+                                   to: "white";
+                                   easing.type: Easing.InOutSine;
+                                   duration: 1000
+                               }
+                               ColorAnimation {
+                                   target: listDelegateRect;
+                                   easing.type: Easing.InOutSine;
+                                   duration: 1000
+                               }
+                          }
+                          SequentialAnimation {
+                               PropertyAnimation {  target: listDelegateRect;
+                                   property: "scale";
+                                   to : 1.2 ;
+                                   easing.type: Easing.InOutBounce
+                                   duration: 1000
+                               }
+                               PropertyAnimation {
+                                   target: listDelegateRect;
+                                   property: "scale";
+                                   to : 1 ;
+                                   easing.type: Easing.InOutBounce
+                                   duration: 1000
+                               }
+                          }
+                      }
+                }
                 Text {
                     id:textItemDelegateId
                     anchors.centerIn: parent

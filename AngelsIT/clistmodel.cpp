@@ -193,7 +193,6 @@ void CListModel::editItem(QStringList strList){
     }else
         if (curNote->state != newState){
             curNote->state = newState;
-            emit stateChanged(curNote->id, curNote->state);
         }
     listNote.takeAt(curItemInd);
     listNote.insert(curItemInd, *curNote);

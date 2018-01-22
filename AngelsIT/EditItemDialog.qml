@@ -136,7 +136,7 @@ Dialog {
             Flickable {
                 id: commentFlick
                 clip: true
-                interactive: true
+                interactive: false
                 anchors.fill: parent
 
                 ScrollBar.vertical: ScrollBar {
@@ -150,6 +150,17 @@ Dialog {
                 width: parent.width
                 height: parent.height
                 font.pixelSize: textSize
+                activeFocusOnPress : true
+                selectByMouse: true
+                selectByKeyboard: true
+                MouseArea{
+                    anchors.fill: newNoteComment
+                    onPressed: {
+                        newNoteComment.cursorPosition = newNoteComment.positionAt(mouseX, mouseY)
+                        console.log("asdd")
+                    }
+                }
+
             }
 
             }
